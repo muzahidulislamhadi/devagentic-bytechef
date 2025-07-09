@@ -25,7 +25,14 @@
         "ecmaVersion": 11,
         "sourceType": "module",
     },
-    "plugins": ["@typescript-eslint", "bytechef", "react", "react-hooks", "sort-destructure-keys", "tailwindcss"],
+    "plugins": [
+        "@typescript-eslint",
+        "bytechef",
+        "react",
+        "react-hooks",
+        "sort-destructure-keys",
+        "tailwindcss"
+    ],
     "rules": {
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
@@ -33,13 +40,22 @@
             "error",
             {
                 "selector": "typeAlias",
-                "format": ["PascalCase"],
-                "suffix": ["Type"],
+                "format": [
+                    "PascalCase"
+                ],
+                "suffix": [
+                    "Type"
+                ],
             },
             {
                 "selector": "interface",
-                "format": ["PascalCase"],
-                "suffix": ["Props", "I"],
+                "format": [
+                    "PascalCase"
+                ],
+                "suffix": [
+                    "Props",
+                    "I"
+                ],
             },
         ],
         "bytechef/empty-line-between-elements": "error",
@@ -57,7 +73,14 @@
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
         "sort-destructure-keys/sort-destructure-keys": 2,
-        "sort-keys": ["error", "asc", {"caseSensitive": true, "natural": true}],
+        "sort-keys": [
+            "error",
+            "asc",
+            {
+                "caseSensitive": true,
+                "natural": true
+            }
+        ],
         "tailwindcss/classnames-order": "warn",
         "tailwindcss/no-custom-classname": [
             "warn",

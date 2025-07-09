@@ -1,5 +1,5 @@
-import {cleanup, render} from '@testing-library/react';
-import {afterEach, vi} from 'vitest';
+import { cleanup, render } from '@testing-library/react';
+import { afterEach, vi } from 'vitest';
 
 afterEach(() => {
     cleanup();
@@ -8,7 +8,7 @@ afterEach(() => {
 const customRender = (ui: React.ReactElement, options = {}) =>
     render(ui, {
         // wrap provider(s) here if needed
-        wrapper: ({children}) => <>{children}</>,
+        wrapper: ({ children }) => <>{children}</>,
         ...options,
     });
 
@@ -26,7 +26,7 @@ export const resetAll = () => {
     vi.clearAllMocks();
 
     if (window.ResizeObserver) {
-        delete (window as unknown as {ResizeObserver?: ResizeObserver}).ResizeObserver;
+        delete (window as unknown as { ResizeObserver?: ResizeObserver }).ResizeObserver;
     }
 
     vi.resetModules();
@@ -37,6 +37,5 @@ export function mockScrollIntoView() {
 }
 
 export * from '@testing-library/react';
-export {default as userEvent} from '@testing-library/user-event';
 // override render export
-export {customRender as render};
+export { customRender as render };
