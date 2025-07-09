@@ -60,7 +60,7 @@ export function MobileSidebar({ mobileMenuOpen, navigation, setMobileMenuOpen, u
                     </nav>
                 </div>
 
-                <div className="flex shrink-0 border-t border-gray-200 p-4">
+                <div className="flex shrink-0 border-t border-border p-4">
                     <a className="group block shrink-0" href="#">
                         <div className="flex items-center">
                             <div>
@@ -68,11 +68,11 @@ export function MobileSidebar({ mobileMenuOpen, navigation, setMobileMenuOpen, u
                             </div>
 
                             <div className="ml-3">
-                                <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">
+                                <p className="text-base font-medium text-foreground group-hover:text-foreground/80">
                                     {user.name}
                                 </p>
 
-                                <p className="text-sm font-medium text-gray-500 group-hover:text-gray-700">
+                                <p className="text-sm font-medium text-muted-foreground group-hover:text-foreground">
                                     Account Settings
                                 </p>
                             </div>

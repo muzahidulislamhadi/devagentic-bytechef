@@ -1,4 +1,4 @@
-import {Avatar, AvatarFallback} from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -12,31 +12,31 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {useWorkspaceStore} from '@/pages/automation/stores/useWorkspaceStore';
-import {ModeType, useModeTypeStore} from '@/pages/home/stores/useModeTypeStore';
-import {useAnalytics} from '@/shared/hooks/useAnalytics';
-import {useHelpHub} from '@/shared/hooks/useHelpHub';
-import {useGetUserWorkspacesQuery} from '@/shared/queries/automation/workspaces.queries';
-import {useApplicationInfoStore} from '@/shared/stores/useApplicationInfoStore';
-import {useAuthenticationStore} from '@/shared/stores/useAuthenticationStore';
-import {useFeatureFlagsStore} from '@/shared/stores/useFeatureFlagsStore';
-import {PlusIcon} from '@radix-ui/react-icons';
-import {useQueryClient} from '@tanstack/react-query';
-import {BlendIcon, DiamondIcon, HelpCircleIcon, SettingsIcon, User2Icon, UserRoundCogIcon} from 'lucide-react';
-import React, {useEffect} from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
+import { useWorkspaceStore } from '@/pages/automation/stores/useWorkspaceStore';
+import { ModeType, useModeTypeStore } from '@/pages/home/stores/useModeTypeStore';
+import { useAnalytics } from '@/shared/hooks/useAnalytics';
+import { useHelpHub } from '@/shared/hooks/useHelpHub';
+import { useGetUserWorkspacesQuery } from '@/shared/queries/automation/workspaces.queries';
+import { useApplicationInfoStore } from '@/shared/stores/useApplicationInfoStore';
+import { useAuthenticationStore } from '@/shared/stores/useAuthenticationStore';
+import { useFeatureFlagsStore } from '@/shared/stores/useFeatureFlagsStore';
+import { PlusIcon } from '@radix-ui/react-icons';
+import { useQueryClient } from '@tanstack/react-query';
+import { BlendIcon, DiamondIcon, HelpCircleIcon, SettingsIcon, User2Icon, UserRoundCogIcon } from 'lucide-react';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const DesktopSidebarBottomMenu = () => {
-    const {application} = useApplicationInfoStore();
-    const {account, logout} = useAuthenticationStore();
-    const {currentType, setCurrentType} = useModeTypeStore();
-    const {currentWorkspaceId, setCurrentWorkspaceId} = useWorkspaceStore();
+    const { application } = useApplicationInfoStore();
+    const { account, logout } = useAuthenticationStore();
+    const { currentType, setCurrentType } = useModeTypeStore();
+    const { currentWorkspaceId, setCurrentWorkspaceId } = useWorkspaceStore();
 
     const analytics = useAnalytics();
 
     const helpHub = useHelpHub();
 
-    const {pathname} = useLocation();
+    const { pathname } = useLocation();
 
     const navigate = useNavigate();
 
@@ -45,7 +45,7 @@ const DesktopSidebarBottomMenu = () => {
     const ff_520 = useFeatureFlagsStore()('ff-520');
 
     /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
-    const {data: workspaces} = useGetUserWorkspacesQuery(account?.id!, !!account);
+    const { data: workspaces } = useGetUserWorkspacesQuery(account?.id!, !!account);
 
     const handleLogOutClick = () => {
         analytics.reset();
@@ -90,7 +90,7 @@ const DesktopSidebarBottomMenu = () => {
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer">
-                    <AvatarFallback className="bg-white">
+                    <AvatarFallback className="bg-muted hover:bg-muted/80 text-muted-foreground">
                         <User2Icon className="size-6" />
                     </AvatarFallback>
                 </Avatar>
@@ -99,7 +99,7 @@ const DesktopSidebarBottomMenu = () => {
             <DropdownMenuContent align="start" className="w-64 space-y-2 p-2">
                 <div className="flex items-center space-x-2">
                     <Avatar className="cursor-pointer">
-                        <AvatarFallback className="bg-muted">
+                        <AvatarFallback className="bg-muted text-muted-foreground">
                             <User2Icon className="size-6" />
                         </AvatarFallback>
                     </Avatar>
@@ -107,7 +107,7 @@ const DesktopSidebarBottomMenu = () => {
                     <div>
                         <div className="text-sm text-muted-foreground">Signed in as</div>
 
-                        <div>{account?.email}</div>
+                        <div className="text-foreground">{account?.email}</div>
                     </div>
                 </div>
 

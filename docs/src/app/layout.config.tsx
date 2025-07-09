@@ -1,6 +1,6 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
-import logo from './assets/logo.svg';
 import Image from "next/image";
+import logo from './assets/logo-long.png';
 
 /**
  * Shared layout configurations
@@ -16,14 +16,14 @@ export const baseOptions: BaseLayoutProps = {
         <Image
           priority
           src={logo}
-          alt="ByteChef Logo"
+          alt="DevAgentic Logo"
           height={24}
         />
-        ByteChef
+        DevAgentic
       </>
     ),
   },
-  githubUrl: 'https://github.com/bytechefhq/bytechef',
+  githubUrl: 'https://devagentic.io/docs',
   links: [
     // {
     //   text: 'Discord',

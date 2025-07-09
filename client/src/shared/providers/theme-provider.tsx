@@ -39,11 +39,13 @@ export function ThemeProvider({
             const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 
             root.classList.add(systemTheme);
+            root.style.setProperty('--theme-mode', systemTheme);
 
             return;
         }
 
         root.classList.add(theme);
+        root.style.setProperty('--theme-mode', theme);
     }, [theme]);
 
     const value = {

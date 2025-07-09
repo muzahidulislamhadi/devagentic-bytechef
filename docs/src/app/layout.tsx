@@ -1,16 +1,16 @@
-import './global.css';
+import { PostHogProvider } from "@/app/providers";
+import { baseUrl, createMetadata } from "@/lib/metadata";
 import { RootProvider } from 'fumadocs-ui/provider';
 import { Inter } from 'next/font/google';
 import type { ReactNode } from 'react';
-import {baseUrl, createMetadata} from "@/lib/metadata";
-import {PostHogProvider} from "@/app/providers";
+import './global.css';
 
 export const metadata = createMetadata({
   title: {
-    template: '%s | ByteChef',
-    default: 'ByteChef',
+    template: '%s | DevAgentic',
+    default: 'DevAgentic',
   },
-  description: 'ByteChef is an open-source, enterprise-ready platform for building AI agents, automating workflows, and integrating applications across SaaS, APIs, and databases with flexible deployment.',
+  description: 'DevAgentic is an enterprise-ready platform for building AI agents, automating workflows, and integrating applications across SaaS, APIs, and databases with flexible deployment.',
   metadataBase: baseUrl,
 });
 

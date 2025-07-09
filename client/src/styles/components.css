@@ -28,6 +28,15 @@
     .link-secondary {
         @apply text-muted-foreground hover:text-foreground transition-colors;
     }
+
+    /* Dropdown menu enhancements for better dark mode support */
+    .dropdown-menu-enhanced {
+        @apply bg-popover text-popover-foreground border border-border shadow-lg;
+    }
+
+    .dropdown-menu-item-enhanced {
+        @apply text-foreground hover:bg-accent hover:text-accent-foreground;
+    }
 }
 
 @layer base {
@@ -195,5 +204,57 @@
     }
     body {
         @apply bg-background text-foreground;
+    }
+
+    /* CommandBar Resource Center theming integration */
+    .CommandBar__Overlay {
+        --cb-background: hsl(var(--background));
+        --cb-foreground: hsl(var(--foreground));
+        --cb-muted: hsl(var(--muted));
+        --cb-muted-foreground: hsl(var(--muted-foreground));
+        --cb-border: hsl(var(--border));
+        --cb-primary: hsl(var(--primary));
+        --cb-primary-foreground: hsl(var(--primary-foreground));
+        --cb-secondary: hsl(var(--secondary));
+        --cb-secondary-foreground: hsl(var(--secondary-foreground));
+        --cb-accent: hsl(var(--accent));
+        --cb-accent-foreground: hsl(var(--accent-foreground));
+        background-color: var(--cb-background);
+        color: var(--cb-foreground);
+        border-color: var(--cb-border);
+    }
+
+    .CommandBar__Container,
+    .CommandBar__Modal,
+    .CommandBar__HelpHub {
+        background-color: hsl(var(--background)) !important;
+        color: hsl(var(--foreground)) !important;
+        border-color: hsl(var(--border)) !important;
+    }
+
+    .CommandBar__Input {
+        background-color: hsl(var(--muted)) !important;
+        color: hsl(var(--foreground)) !important;
+        border-color: hsl(var(--border)) !important;
+    }
+
+    .CommandBar__Item {
+        color: hsl(var(--foreground)) !important;
+        background-color: transparent !important;
+    }
+
+    .CommandBar__Item:hover,
+    .CommandBar__Item[data-highlighted="true"] {
+        background-color: hsl(var(--accent)) !important;
+        color: hsl(var(--accent-foreground)) !important;
+    }
+
+    .CommandBar__Text {
+        color: hsl(var(--muted-foreground)) !important;
+    }
+
+    /* Ensure Resource Center iframe content inherits theme */
+    iframe[src*="commandbar"] {
+        color-scheme: var(--theme-mode, auto);
     }
 }
