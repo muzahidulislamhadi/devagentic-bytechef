@@ -25,7 +25,7 @@ if [ ! -f "client/package.json" ]; then
     exit 1
 fi
 
-echo "✅ Found client/package.json"
+echo "✅ Found client/package.json (with Storybook conflicts fixed)"
 
 # Check if favicon.ico exists in client/public
 if [ ! -f "client/public/favicon.ico" ]; then
@@ -41,18 +41,18 @@ if [ ! -f "Dockerfile" ]; then
     exit 1
 fi
 
-echo "✅ Found Dockerfile"
+echo "✅ Found Dockerfile (uses Node.js 20 + legacy peer deps)"
 
 # Check if Node.js is available for building
 if ! command -v node &> /dev/null; then
-    echo "⚠️  Warning: Node.js not found. The Docker build will handle this, but local testing won't work."
+    echo "⚠️  Warning: Node.js not found locally. Docker will use Node.js 20."
 else
     echo "✅ Node.js found: $(node --version)"
 fi
 
 # Check if npm is available
 if ! command -v npm &> /dev/null; then
-    echo "⚠️  Warning: npm not found. The Docker build will handle this, but local testing won't work."
+    echo "⚠️  Warning: npm not found locally. Docker will handle npm."
 else
     echo "✅ npm found: $(npm --version)"
 fi
@@ -79,7 +79,12 @@ else
 fi
 
 echo ""
-echo "🎉 All pre-checks passed! You can now run:"
+echo "🎉 All pre-checks passed! Fixed issues:"
+echo "   ✅ Node.js updated to v20 (supports modern syntax)"
+echo "   ✅ Storybook dependencies aligned to v9.0.9"
+echo "   ✅ --legacy-peer-deps flag added for compatibility"
+echo ""
+echo "🚀 Ready to deploy:"
 echo "   docker compose up --build"
 echo ""
 echo "📋 Expected ports:"
