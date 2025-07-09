@@ -1,0 +1,33 @@
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      mvc:
+        routes:
+          - id: configuration-service
+            uri: lb://configuration-app
+            predicates:
+            - Path=/api/automation/**,/api/embedded/**,/api/platform/**
+          - id: connection-service
+            uri: lb://connection-app
+            predicates:
+              - Path=/api/automation/**,/api/embedded/**
+          - id: execution-service
+            uri: lb://execution-app
+            predicates:
+              - Path=/api/automation/**,/api/embedded/**
+          - id: webhook-service
+            uri: lb://webhook-app
+            predicates:
+              - Path=/webhooks/**
+  mail:
+    base-url: https://www.bytechef.io
+    from: noreply@app.bytechef.io
+
+server:
+  servlet:
+    session:
+      cookie:
+        http-only: true

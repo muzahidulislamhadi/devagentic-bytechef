@@ -1,0 +1,25 @@
+server:
+  port: 9999
+
+openapi:
+  openAPIDefinition:
+    base-path:
+      automation: /api/automation
+      embedded: /api/embedded
+      platform: /api/platform
+
+spring:
+  liquibase:
+    contexts: configuration
+
+bytechef:
+  encryption:
+    provider: filesystem
+  file-storage:
+    provider: jdbc
+  workflow:
+    repository:
+      jdbc:
+        enabled: true
+    output-storage:
+      provider: jdbc

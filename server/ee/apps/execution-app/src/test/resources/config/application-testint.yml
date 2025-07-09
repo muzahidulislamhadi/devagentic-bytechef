@@ -1,0 +1,20 @@
+server:
+  port: 9999
+
+openapi:
+  openAPIDefinition:
+    base-path:
+      automation: /api/automation
+      embedded: /api/embedded
+      platform: /api/platform
+
+bytechef:
+  data-storage:
+    provider: jdbc
+  file-storage:
+    provider: jdbc
+  message-broker:
+    provider: jms
+  workflow:
+    output-storage:
+      provider: jdbc

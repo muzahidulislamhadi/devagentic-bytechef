@@ -1,0 +1,9 @@
+logging:
+  level:
+    ROOT: INFO
+    com.bytechef: DEBUG
+
+spring:
+  devtools:
+    restart:
+      enabled: true

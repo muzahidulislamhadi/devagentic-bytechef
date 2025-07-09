@@ -1,0 +1,15 @@
+server:
+  port: 7666
+
+spring:
+  devtools:
+    livereload:
+      port: 35733
+
+#####
+
+bytechef:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bytechef_connection
+    username: postgres
+    password: postgres

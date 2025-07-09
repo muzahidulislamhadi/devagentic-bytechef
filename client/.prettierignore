@@ -1,0 +1,8 @@
+# openapi typescript fetch client
+**/middleware
+coverage
+dist
+src/components/assistant-ui
+src/components/ui
+src/hooks/use-toast.ts
+mockServiceWorker.js

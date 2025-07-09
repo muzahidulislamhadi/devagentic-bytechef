@@ -1,0 +1,26 @@
+management:
+  endpoint:
+    health:
+      group:
+        readiness:
+          include: readinessState,db
+
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: ${bytechef.datasource.url}
+    username: ${bytechef.datasource.username}
+    password: ${bytechef.datasource.password}
+    hikari:
+      poolName: Hikari
+  liquibase:
+    contexts: scheduler
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: never
+    properties:
+      org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+  task:
+    execution:
+      thread-name-prefix: scheduler-app-task-

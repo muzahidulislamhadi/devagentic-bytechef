@@ -1,0 +1,15 @@
+server:
+  port: 9999
+
+bytechef:
+  discovery-service:
+    provider: redis
+  data-storage:
+    provider: jdbc
+  file-storage:
+    provider: jdbc
+  message-broker:
+    provider: jms
+  workflow:
+    output-storage:
+      provider: jdbc

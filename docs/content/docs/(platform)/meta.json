@@ -1,0 +1,12 @@
+{
+  "title": "Platform",
+  "description": "The platform overview",
+  "icon": "Building",
+  "pages": [
+    "---Getting Started---",
+    "index",
+    "platform-overview",
+    "---Setup---",
+    "deployment"
+  ]
+}

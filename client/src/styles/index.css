@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        /*@apply scroll-smooth font-display antialiased;*/
+        @apply h-full;
+    }
+
+    body {
+        @apply h-full;
+        @apply overflow-hidden;
+    }
+
+    body #root {
+        @apply h-full;
+    }
+}
