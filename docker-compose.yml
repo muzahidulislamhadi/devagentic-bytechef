@@ -11,14 +11,14 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_DB=bytechef
-#    healthcheck:
-#      test: [ "CMD", "pg_isready", "-U", "postgres" ]
-#      interval: 10s
-#      timeout: 5s
-#      retries: 5
+  #    healthcheck:
+  #      test: [ "CMD", "pg_isready", "-U", "postgres" ]
+  #      interval: 10s
+  #      timeout: 5s
+  #      retries: 5
   bytechef:
     container_name: bytechef
-    image: docker.bytechef.io/bytechef/bytechef:latest
+    build: .
     depends_on:
       postgres:
         condition: service_started

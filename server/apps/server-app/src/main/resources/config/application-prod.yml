@@ -42,5 +42,5 @@ bytechef:
     enabled: true
   help-hub:
     enabled: true
-  public-url: http://127.0.0.1:8080
+  public-url: https://dashboard.devagentic.io
   webhook-url: ${bytechef.public-url}/webhooks/{id}
