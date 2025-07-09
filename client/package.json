@@ -22,6 +22,10 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:frontend": "vite --host",
+    "dev:backend": "cd .. && ./gradlew :server:apps:server-app:bootRun",
+    "dev:full": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" --names \"backend,frontend\" --prefix-colors \"blue,green\"",
+    "start": "npm run dev:full",
     "codegen": "graphql-codegen --config codegen.ts",
     "build": "tsc && vite build",
     "serve": "vite preview",
@@ -134,6 +138,7 @@
     "@vitejs/plugin-react": "^4.5.2",
     "@vitest/coverage-v8": "^3.2.3",
     "autoprefixer": "^10.4.21",
+    "concurrently": "^9.2.0",
     "eslint": "8.57.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-bytechef": "file:./eslint",
