@@ -5,9 +5,65 @@
     .heading-tertiary {
         @apply font-semibold uppercase text-muted-foreground;
     }
+
+    /* Enhanced button styles for dark theme */
+    .btn-primary {
+        @apply bg-primary text-primary-foreground hover:bg-primary/90;
+    }
+
+    .btn-secondary {
+        @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
+    }
+
+    /* Card enhancements */
+    .card-enhanced {
+        @apply bg-card text-card-foreground border border-border shadow-lg;
+    }
+
+    /* Link enhancements */
+    .link-primary {
+        @apply text-primary hover:text-primary/80 underline-offset-4 hover:underline;
+    }
+
+    .link-secondary {
+        @apply text-muted-foreground hover:text-foreground transition-colors;
+    }
 }
 
 @layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground font-sans antialiased;
+    }
+
+    /* Ensure all headings are properly colored */
+    h1, h2, h3, h4, h5, h6 {
+        @apply text-foreground;
+    }
+
+    /* Ensure all paragraphs and text are visible */
+    p, span, div {
+        @apply text-foreground;
+    }
+
+    /* Input and form improvements */
+    input, textarea, select {
+        @apply bg-background text-foreground border-input;
+    }
+
+    /* Button base improvements */
+    button {
+        @apply text-foreground;
+    }
+
+    /* Link improvements */
+    a {
+        @apply text-foreground hover:text-foreground/80;
+    }
+
     :root {
         --background: 0 0% 100%;
         --foreground: 224 71.4% 4.1%;
@@ -75,34 +131,63 @@
     }
 
     .dark {
-        --background: 224 71.4% 4.1%;
-        --foreground: 210 20% 98%;
-        --card: 224 71.4% 4.1%;
-        --card-foreground: 210 20% 98%;
-        --popover: 224 71.4% 4.1%;
-        --popover-foreground: 210 20% 98%;
-        --primary: 210 20% 98%;
-        --primary-foreground: 220.9 39.3% 11%;
-        --secondary: 215 27.9% 16.9%;
-        --secondary-foreground: 210 20% 98%;
-        --muted: 215 27.9% 16.9%;
-        --muted-foreground: 217.9 10.6% 64.9%;
-        --accent: 215 27.9% 16.9%;
-        --accent-foreground: 210 20% 98%;
-        --info: 214, 100%, 97%;
-        --info-foreground: 224, 76%, 48%;
-        --success: 142, 69%, 58%;
-        --success-foreground: 144, 61%, 20%;
+        --background: 222.2 84% 4.9%;
+        --foreground: 210 40% 98%;
+        --card: 222.2 84% 4.9%;
+        --card-foreground: 210 40% 98%;
+        --popover: 222.2 84% 4.9%;
+        --popover-foreground: 210 40% 98%;
+        --primary: 217.2 91.2% 59.8%;
+        --primary-foreground: 222.2 84% 4.9%;
+        --secondary: 217.2 32.6% 17.5%;
+        --secondary-foreground: 210 40% 98%;
+        --muted: 217.2 32.6% 17.5%;
+        --muted-foreground: 215 20.2% 65.1%;
+        --accent: 217.2 32.6% 17.5%;
+        --accent-foreground: 210 40% 98%;
         --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 210 20% 98%;
-        --border: 215 27.9% 16.9%;
-        --input: 215 27.9% 16.9%;
-        --ring: 216 12.2% 83.9%;
+        --destructive-foreground: 210 40% 98%;
+        --border: 217.2 32.6% 17.5%;
+        --input: 217.2 32.6% 17.5%;
+        --ring: 224.3 76.3% 94.1%;
         --chart-1: 220 70% 50%;
         --chart-2: 160 60% 45%;
         --chart-3: 30 80% 55%;
         --chart-4: 280 65% 60%;
         --chart-5: 340 75% 55%;
+        --skeleton: 217.2 32.6% 17.5%;
+        --surface-brand-primary: 217 91% 60%;
+        --surface-brand-primary-hover: 217 91% 56%;
+        --surface-brand-primary-active: 217 92% 48%;
+        --surface-brand-secondary: 217 32% 18%;
+        --surface-brand-secondary-hover: 217 40% 22%;
+        --surface-destructive-primary: 0 72% 51%;
+        --surface-destructive-primary-hover: 0 74% 42%;
+        --surface-destructive-primary-active: 0 70% 35%;
+        --surface-destructive-secondary: 0 86% 12%;
+        --surface-main: 222.2 84% 4.9%;
+        --surface-neutral-primary-hover: 217.2 32.6% 20%;
+        --surface-neutral-secondary: 217.2 32.6% 17.5%;
+        --surface-neutral-secondary-hover: 217.2 32.6% 22%;
+        --surface-neutral-tertiary: 217.2 32.6% 14%;
+        --surface-popover-canvas: 222.2 84% 4.9%;
+        --surface-warning-primary: 48, 96%, 53%;
+        --surface-warning-secondary: 54, 91%, 12%;
+        --content-brand-primary: 217 91% 60%;
+        --content-destructive: 0 74% 62%;
+        --content-neutral-primary: 210 40% 98%;
+        --content-neutral-secondary: 215 20.2% 65.1%;
+        --content-neutral-tertiary: 215 13.8% 34.1%;
+        --content-success: 142 69% 58%;
+        --content-warning: 45 93% 67%;
+        --stroke-neutral-primary: 217.2 32.6% 25%;
+        --stroke-neutral-primary-hover: 217.2 32.6% 35%;
+        --stroke-neutral-secondary: 217.2 32.6% 17.5%;
+        --stroke-neutral-tertiary: 217.2 32.6% 22%;
+        --stroke-brand-primary: 217 91% 60%;
+        --stroke-brand-primary-pressed: 217 87% 54%;
+        --stroke-brand-secondary: 217 62% 28%;
+        --stroke-brand-secondary-hover: 217 81% 35%;
     }
 
     * {

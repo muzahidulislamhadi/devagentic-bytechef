@@ -56,7 +56,7 @@ function renderApp() {
 
     root.render(
         <React.StrictMode>
-            <ThemeProvider defaultTheme="dark">
+            <ThemeProvider defaultTheme="system">
                 <QueryClientProvider client={queryClient}>
                     <PostHogProvider client={posthog}>
                         <TooltipProvider>

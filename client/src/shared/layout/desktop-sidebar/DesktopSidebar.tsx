@@ -23,7 +23,7 @@ export function DesktopSidebar({
 
     return (
         <aside className={twMerge('hidden bg-muted lg:flex lg:shrink-0', className)}>
-            <div className="flex w-sidebar-width border-r border-r-border/50 bg-muted">
+            <div className="flex w-sidebar-width border-r border-r-border/50 bg-muted/30">
                 <div className="flex min-h-0 flex-1 flex-col">
                     <div className="flex-1">
                         <div className="flex items-center justify-center py-4">
@@ -37,8 +37,8 @@ export function DesktopSidebar({
                                 <div className="p-0.5" key={item.name}>
                                     <Link
                                         className={twMerge(
-                                            'flex items-center rounded-lg p-2 hover:text-blue-600',
-                                            pathname.includes(item.href) && 'text-blue-600'
+                                            'flex items-center rounded-lg p-3 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground',
+                                            pathname.includes(item.href) && 'bg-accent text-accent-foreground'
                                         )}
                                         to={item.href}
                                     >

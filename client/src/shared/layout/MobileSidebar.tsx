@@ -1,6 +1,6 @@
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 
-import reactLogo from '../../assets/logo.png';
+import reactLogo from '@/assets/logo.png';
 
 interface MobileSidebarProps {
     user: { name: string; email: string; imageUrl: string };
@@ -16,7 +16,7 @@ interface MobileSidebarProps {
 export function MobileSidebar({ mobileMenuOpen, navigation, setMobileMenuOpen, user }: MobileSidebarProps) {
     return (
         <Dialog onOpenChange={setMobileMenuOpen} open={mobileMenuOpen}>
-            <DialogContent className="flex h-full flex-col bg-white p-0 focus:outline-none">
+            <DialogContent className="flex h-full flex-col bg-background p-0 focus:outline-none">
                 {/*<div className="absolute right-4 top-0 pt-4">*/}
 
                 {/*    <button*/}
@@ -44,13 +44,13 @@ export function MobileSidebar({ mobileMenuOpen, navigation, setMobileMenuOpen, u
                         <div className="space-y-1 px-2">
                             {navigation.map((item) => (
                                 <a
-                                    className="group flex items-center rounded-md p-2 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                                    className="group flex items-center rounded-md p-2 text-base font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
                                     href={item.href}
                                     key={item.name}
                                 >
                                     <item.icon
                                         aria-hidden="true"
-                                        className="mr-4 size-6 text-gray-400 group-hover:text-gray-500"
+                                        className="mr-4 size-6 text-muted-foreground group-hover:text-accent-foreground"
                                     />
 
                                     {item.name}
