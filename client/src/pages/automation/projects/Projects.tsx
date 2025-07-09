@@ -1,19 +1,19 @@
-import EmptyList from '@/components/EmptyList';
 import PageLoader from '@/components/PageLoader';
-import {Button} from '@/components/ui/button';
-import {useGetWorkspaceProjectGitConfigurationsQuery} from '@/ee/queries/projectGit.queries';
+import { Button } from '@/components/ui/button';
+import { useGetWorkspaceProjectGitConfigurationsQuery } from '@/ee/queries/projectGit.queries';
 import ProjectsFilterTitle from '@/pages/automation/projects/components/ProjectsFilterTitle';
 import ProjectsLeftSidebarNav from '@/pages/automation/projects/components/ProjectsLeftSidebarNav';
-import {useWorkspaceStore} from '@/pages/automation/stores/useWorkspaceStore';
+import { useWorkspaceStore } from '@/pages/automation/stores/useWorkspaceStore';
 import Header from '@/shared/layout/Header';
 import LayoutContainer from '@/shared/layout/LayoutContainer';
-import {useGetProjectCategoriesQuery} from '@/shared/queries/automation/projectCategories.queries';
-import {useGetProjectTagsQuery} from '@/shared/queries/automation/projectTags.queries';
-import {useGetWorkspaceProjectsQuery} from '@/shared/queries/automation/projects.queries';
-import {useApplicationInfoStore} from '@/shared/stores/useApplicationInfoStore';
-import {useFeatureFlagsStore} from '@/shared/stores/useFeatureFlagsStore';
-import {FolderIcon} from 'lucide-react';
-import {useSearchParams} from 'react-router-dom';
+import { useGetProjectCategoriesQuery } from '@/shared/queries/automation/projectCategories.queries';
+import { useGetProjectTagsQuery } from '@/shared/queries/automation/projectTags.queries';
+import { useGetWorkspaceProjectsQuery } from '@/shared/queries/automation/projects.queries';
+import { useApplicationInfoStore } from '@/shared/stores/useApplicationInfoStore';
+import { useFeatureFlagsStore } from '@/shared/stores/useFeatureFlagsStore';
+import { FolderIcon } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
+import FancyProjectsEmptyState from './components/FancyProjectsEmptyState';
 
 import ProjectDialog from './components/ProjectDialog';
 import ProjectList from './components/project-list/ProjectList';
@@ -24,8 +24,8 @@ export enum Type {
 }
 
 const Projects = () => {
-    const {application} = useApplicationInfoStore();
-    const {currentWorkspaceId} = useWorkspaceStore();
+    const { application } = useApplicationInfoStore();
+    const { currentWorkspaceId } = useWorkspaceStore();
 
     const [searchParams] = useSearchParams();
 
@@ -39,7 +39,7 @@ const Projects = () => {
         type: tagId ? Type.Tag : Type.Category,
     };
 
-    const {data: categories, error: categoriesError, isLoading: categoriesIsLoading} = useGetProjectCategoriesQuery();
+    const { data: categories, error: categoriesError, isLoading: categoriesIsLoading } = useGetProjectCategoriesQuery();
 
     const {
         data: projectGitConfigurations,
@@ -57,7 +57,7 @@ const Projects = () => {
         tagId: searchParams.get('tagId') ? parseInt(searchParams.get('tagId')!) : undefined,
     });
 
-    const {data: tags, error: tagsError, isLoading: tagsIsLoading} = useGetProjectTagsQuery();
+    const { data: tags, error: tagsError, isLoading: tagsIsLoading } = useGetProjectTagsQuery();
 
     return (
         <LayoutContainer
@@ -67,7 +67,19 @@ const Projects = () => {
                     <Header
                         centerTitle={true}
                         position="main"
-                        right={<ProjectDialog project={undefined} triggerNode={<Button>New Project</Button>} />}
+                        right={
+                            <ProjectDialog
+                                project={undefined}
+                                triggerNode={
+                                    <Button
+                                        className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2 font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                                    >
+                                        <FolderIcon className="mr-2 h-4 w-4" />
+                                        New Project
+                                    </Button>
+                                }
+                            />
+                        }
                         title={<ProjectsFilterTitle categories={categories} filterData={filterData} tags={tags} />}
                     />
                 )
@@ -87,11 +99,21 @@ const Projects = () => {
                         tags={tags}
                     />
                 ) : (
-                    <EmptyList
-                        button={<ProjectDialog project={undefined} triggerNode={<Button>Create Project</Button>} />}
-                        icon={<FolderIcon className="size-24 text-gray-300" />}
-                        message="Get started by creating a new project."
-                        title="No Projects"
+                    <FancyProjectsEmptyState
+                        createProjectButton={
+                            <ProjectDialog
+                                project={undefined}
+                                triggerNode={
+                                    <Button
+                                        size="lg"
+                                        className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 text-lg font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+                                    >
+                                        <FolderIcon className="mr-2 h-5 w-5" />
+                                        Create Your First Project
+                                    </Button>
+                                }
+                            />
+                        }
                     />
                 )}
             </PageLoader>
