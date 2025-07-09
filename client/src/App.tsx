@@ -4,7 +4,7 @@ import { ModeType, useModeTypeStore } from '@/pages/home/stores/useModeTypeStore
 import CopilotPanel from '@/shared/components/copilot/CopilotPanel';
 import { useCopilotStore } from '@/shared/components/copilot/stores/useCopilotStore';
 import { useAnalytics } from '@/shared/hooks/useAnalytics';
-import { useHelpHub } from '@/shared/hooks/useHelpHub';
+
 import { MobileSidebar } from '@/shared/layout/MobileSidebar';
 import { MobileTopNavigation } from '@/shared/layout/MobileTopNavigation';
 import { DesktopSidebar } from '@/shared/layout/desktop-sidebar/DesktopSidebar';
@@ -126,8 +126,6 @@ function App() {
 
     const analytics = useAnalytics();
 
-    const helpHub = useHelpHub();
-
     const location = useLocation();
 
     const queryClient = useQueryClient();
@@ -169,16 +167,7 @@ function App() {
         analytics.init();
     }, [analytics]);
 
-    useEffect(() => {
-        helpHub.init();
-    }, [helpHub]);
 
-    useEffect(() => {
-        if (account) {
-            helpHub.boot(account);
-            helpHub.addRouter();
-        }
-    }, [account, helpHub]);
 
     useEffect(() => {
         document.title =
@@ -201,7 +190,6 @@ function App() {
     useEffect(() => {
         if (!authenticated) {
             analytics.reset();
-            helpHub.shutdown();
             resetAuthentication();
             queryClient.resetQueries();
         }

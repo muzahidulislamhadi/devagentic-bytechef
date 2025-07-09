@@ -1,7 +1,7 @@
 /* eslint-disable sort-keys */
 
-import {create} from 'zustand';
-import {devtools} from 'zustand/middleware';
+import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
 
 export type EditionType = 'CE' | 'EE';
 
@@ -22,12 +22,6 @@ export interface ApplicationInfoI {
         edition: EditionType;
     } | null;
     featureFlags: Record<string, boolean>;
-    helpHub: {
-        enabled: boolean;
-        commandBar: {
-            orgId: string | undefined;
-        };
-    };
     loading: boolean;
     signUp: {
         activationRequired: boolean;
@@ -62,12 +56,6 @@ export const useApplicationInfoStore = create<ApplicationInfoI>()(
                 application: null,
                 featureFlags: {},
                 loading: false,
-                helpHub: {
-                    enabled: true,
-                    commandBar: {
-                        orgId: undefined,
-                    },
-                },
                 signUp: {
                     activationRequired: false,
                     enabled: true,
@@ -101,10 +89,6 @@ export const useApplicationInfoStore = create<ApplicationInfoI>()(
                             },
                             application: json.application,
                             featureFlags: json.featureFlags,
-                            helpHub: {
-                                enabled: json.helpHub.enabled === 'true',
-                                commandBar: json.helpHub.commandBar,
-                            },
                             loading: false,
                             signUp: json.signUp,
                         }));

@@ -15,14 +15,14 @@ import {
 import { useWorkspaceStore } from '@/pages/automation/stores/useWorkspaceStore';
 import { ModeType, useModeTypeStore } from '@/pages/home/stores/useModeTypeStore';
 import { useAnalytics } from '@/shared/hooks/useAnalytics';
-import { useHelpHub } from '@/shared/hooks/useHelpHub';
+
 import { useGetUserWorkspacesQuery } from '@/shared/queries/automation/workspaces.queries';
 import { useApplicationInfoStore } from '@/shared/stores/useApplicationInfoStore';
 import { useAuthenticationStore } from '@/shared/stores/useAuthenticationStore';
 import { useFeatureFlagsStore } from '@/shared/stores/useFeatureFlagsStore';
 import { PlusIcon } from '@radix-ui/react-icons';
 import { useQueryClient } from '@tanstack/react-query';
-import { BlendIcon, DiamondIcon, HelpCircleIcon, SettingsIcon, User2Icon, UserRoundCogIcon } from 'lucide-react';
+import { BlendIcon, DiamondIcon, SettingsIcon, User2Icon, UserRoundCogIcon } from 'lucide-react';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -33,8 +33,6 @@ const DesktopSidebarBottomMenu = () => {
     const { currentWorkspaceId, setCurrentWorkspaceId } = useWorkspaceStore();
 
     const analytics = useAnalytics();
-
-    const helpHub = useHelpHub();
 
     const { pathname } = useLocation();
 
@@ -49,7 +47,6 @@ const DesktopSidebarBottomMenu = () => {
 
     const handleLogOutClick = () => {
         analytics.reset();
-        helpHub.shutdown();
         queryClient.resetQueries();
         logout();
     };
@@ -206,13 +203,6 @@ const DesktopSidebarBottomMenu = () => {
                         </div>
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem className="cursor-pointer font-semibold" onClick={() => helpHub.open()}>
-                        <div className="flex items-center space-x-1">
-                            <HelpCircleIcon className="size-5" />
-
-                            <span>Resource Center</span>
-                        </div>
-                    </DropdownMenuItem>
                 </div>
 
                 <DropdownMenuSeparator />
