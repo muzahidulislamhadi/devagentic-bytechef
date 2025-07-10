@@ -1,4 +1,3 @@
-import '@/shared/styles/dropdownMenu.css';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -9,9 +8,9 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import {Badge} from '@/components/ui/badge';
-import {Button} from '@/components/ui/button';
-import {CollapsibleTrigger} from '@/components/ui/collapsible';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -19,30 +18,31 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {Tooltip, TooltipContent, TooltipTrigger} from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import {
     usePullProjectFromGitMutation,
     useUpdateProjectGitConfigurationMutation,
 } from '@/ee/mutations/projectGit.mutations';
-import {ProjectGitConfigurationKeys} from '@/ee/queries/projectGit.queries';
-import {ProjectGitConfiguration} from '@/ee/shared/middleware/automation/configuration';
-import {useToast} from '@/hooks/use-toast';
+import { ProjectGitConfigurationKeys } from '@/ee/queries/projectGit.queries';
+import { ProjectGitConfiguration } from '@/ee/shared/middleware/automation/configuration';
+import { useToast } from '@/hooks/use-toast';
 import ProjectGitConfigurationDialog from '@/pages/automation/project/components/ProjectGitConfigurationDialog';
 import ProjectPublishDialog from '@/pages/automation/projects/components/ProjectPublishDialog';
 import WorkflowDialog from '@/shared/components/workflow/WorkflowDialog';
 import EEVersion from '@/shared/edition/EEVersion';
-import {useAnalytics} from '@/shared/hooks/useAnalytics';
-import {Project, Tag} from '@/shared/middleware/automation/configuration';
-import {useUpdateProjectTagsMutation} from '@/shared/mutations/automation/projectTags.mutations';
-import {useDeleteProjectMutation, useDuplicateProjectMutation} from '@/shared/mutations/automation/projects.mutations';
-import {useCreateProjectWorkflowMutation} from '@/shared/mutations/automation/workflows.mutations';
-import {ProjectCategoryKeys} from '@/shared/queries/automation/projectCategories.queries';
-import {ProjectTagKeys} from '@/shared/queries/automation/projectTags.queries';
-import {ProjectKeys} from '@/shared/queries/automation/projects.queries';
-import {useGetWorkflowQuery} from '@/shared/queries/automation/workflows.queries';
-import {useFeatureFlagsStore} from '@/shared/stores/useFeatureFlagsStore';
-import {ChevronDownIcon} from '@radix-ui/react-icons';
-import {useQueryClient} from '@tanstack/react-query';
+import { useAnalytics } from '@/shared/hooks/useAnalytics';
+import { Project, Tag } from '@/shared/middleware/automation/configuration';
+import { useUpdateProjectTagsMutation } from '@/shared/mutations/automation/projectTags.mutations';
+import { useDeleteProjectMutation, useDuplicateProjectMutation } from '@/shared/mutations/automation/projects.mutations';
+import { useCreateProjectWorkflowMutation } from '@/shared/mutations/automation/workflows.mutations';
+import { ProjectCategoryKeys } from '@/shared/queries/automation/projectCategories.queries';
+import { ProjectTagKeys } from '@/shared/queries/automation/projectTags.queries';
+import { ProjectKeys } from '@/shared/queries/automation/projects.queries';
+import { useGetWorkflowQuery } from '@/shared/queries/automation/workflows.queries';
+import { useFeatureFlagsStore } from '@/shared/stores/useFeatureFlagsStore';
+import '@/shared/styles/dropdownMenu.css';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
+import { useQueryClient } from '@tanstack/react-query';
 import {
     CopyIcon,
     DownloadIcon,
@@ -55,8 +55,8 @@ import {
     Trash2Icon,
     WorkflowIcon,
 } from 'lucide-react';
-import {ChangeEvent, useRef, useState} from 'react';
-import {Link, useNavigate, useSearchParams} from 'react-router-dom';
+import { ChangeEvent, useRef, useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 import TagList from '../../../../../components/TagList';
 import ProjectDialog from '../ProjectDialog';
@@ -67,7 +67,7 @@ interface ProjectItemProps {
     remainingTags?: Tag[];
 }
 
-const ProjectListItem = ({project, projectGitConfiguration, remainingTags}: ProjectItemProps) => {
+const ProjectListItem = ({ project, projectGitConfiguration, remainingTags }: ProjectItemProps) => {
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [showEditDialog, setShowEditDialog] = useState(false);
     const [showProjectGitConfigurationDialog, setShowProjectGitConfigurationDialog] = useState(false);
@@ -76,10 +76,10 @@ const ProjectListItem = ({project, projectGitConfiguration, remainingTags}: Proj
 
     const hiddenFileInputRef = useRef<HTMLInputElement>(null);
 
-    const {captureProjectWorkflowCreated, captureProjectWorkflowImported} = useAnalytics();
+    const { captureProjectWorkflowCreated, captureProjectWorkflowImported } = useAnalytics();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const {toast} = useToast();
+    const { toast } = useToast();
 
     const ff_1039 = useFeatureFlagsStore()('ff-1039');
 
@@ -97,7 +97,7 @@ const ProjectListItem = ({project, projectGitConfiguration, remainingTags}: Proj
 
     const deleteProjectMutation = useDeleteProjectMutation({
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ProjectKeys.projects});
+            queryClient.invalidateQueries({ queryKey: ProjectKeys.projects });
             queryClient.invalidateQueries({
                 queryKey: ProjectCategoryKeys.projectCategories,
             });
@@ -109,7 +109,7 @@ const ProjectListItem = ({project, projectGitConfiguration, remainingTags}: Proj
 
     const duplicateProjectMutation = useDuplicateProjectMutation({
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ProjectKeys.projects});
+            queryClient.invalidateQueries({ queryKey: ProjectKeys.projects });
         },
     });
 
@@ -133,9 +133,9 @@ const ProjectListItem = ({project, projectGitConfiguration, remainingTags}: Proj
 
     const pullProjectFromGitMutation = usePullProjectFromGitMutation({
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ProjectKeys.projects});
+            queryClient.invalidateQueries({ queryKey: ProjectKeys.projects });
 
-            toast({description: 'Project pulled from git repository successfully.'});
+            toast({ description: 'Project pulled from git repository successfully.' });
         },
     });
 
@@ -149,7 +149,7 @@ const ProjectListItem = ({project, projectGitConfiguration, remainingTags}: Proj
 
     const updateProjectTagsMutation = useUpdateProjectTagsMutation({
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ProjectKeys.projects});
+            queryClient.invalidateQueries({ queryKey: ProjectKeys.projects });
             queryClient.invalidateQueries({
                 queryKey: ProjectTagKeys.projectTags,
             });
@@ -171,7 +171,7 @@ const ProjectListItem = ({project, projectGitConfiguration, remainingTags}: Proj
         onSuccess,
         projectGitConfiguration,
     }: {
-        projectGitConfiguration: {branch: string; enabled: boolean};
+        projectGitConfiguration: { branch: string; enabled: boolean };
         onSuccess: () => void;
     }) => {
         updateProjectGitConfigurationMutation.mutate(
@@ -186,12 +186,12 @@ const ProjectListItem = ({project, projectGitConfiguration, remainingTags}: Proj
     };
 
     const handlePullProjectFromGitClick = () => {
-        pullProjectFromGitMutation.mutate({id: project.id!});
+        pullProjectFromGitMutation.mutate({ id: project.id! });
     };
 
     return (
         <>
-            <div className="flex w-full items-center justify-between rounded-md px-2 hover:bg-destructive-foreground">
+            <div className="flex w-full items-center justify-between rounded-md px-2 hover:bg-accent hover:text-accent-foreground">
                 <div className="flex flex-1 items-center py-5 group-data-[state='open']:border-none">
                     <div className="flex-1">
                         <div className="flex items-center gap-2">

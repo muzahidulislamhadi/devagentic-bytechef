@@ -1,4 +1,3 @@
-import '@/shared/styles/dropdownMenu.css';
 import LazyLoadSVG from '@/components/LazyLoadSVG/LazyLoadSVG';
 import {
     AlertDialog,
@@ -10,7 +9,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import {Button} from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -18,23 +17,24 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {Tooltip, TooltipContent, TooltipTrigger} from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import WorkflowDialog from '@/shared/components/workflow/WorkflowDialog';
-import {Project, Workflow} from '@/shared/middleware/automation/configuration';
-import {ComponentDefinitionBasic} from '@/shared/middleware/platform/configuration';
+import { Project, Workflow } from '@/shared/middleware/automation/configuration';
+import { ComponentDefinitionBasic } from '@/shared/middleware/platform/configuration';
 import {
     useDeleteWorkflowMutation,
     useDuplicateWorkflowMutation,
     useUpdateWorkflowMutation,
 } from '@/shared/mutations/automation/workflows.mutations';
-import {ProjectWorkflowKeys} from '@/shared/queries/automation/projectWorkflows.queries';
-import {ProjectKeys} from '@/shared/queries/automation/projects.queries';
-import {WorkflowKeys, useGetWorkflowQuery} from '@/shared/queries/automation/workflows.queries';
-import {WorkflowTestConfigurationKeys} from '@/shared/queries/platform/workflowTestConfigurations.queries';
-import {useQueryClient} from '@tanstack/react-query';
-import {CopyIcon, EditIcon, EllipsisVerticalIcon, Trash2Icon, UploadIcon} from 'lucide-react';
-import {useState} from 'react';
-import {Link, useSearchParams} from 'react-router-dom';
+import { ProjectWorkflowKeys } from '@/shared/queries/automation/projectWorkflows.queries';
+import { ProjectKeys } from '@/shared/queries/automation/projects.queries';
+import { WorkflowKeys, useGetWorkflowQuery } from '@/shared/queries/automation/workflows.queries';
+import { WorkflowTestConfigurationKeys } from '@/shared/queries/platform/workflowTestConfigurations.queries';
+import '@/shared/styles/dropdownMenu.css';
+import { useQueryClient } from '@tanstack/react-query';
+import { CopyIcon, EditIcon, EllipsisVerticalIcon, Trash2Icon, UploadIcon } from 'lucide-react';
+import { useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 
 const ProjectWorkflowListItem = ({
     filteredComponentNames,
@@ -62,7 +62,7 @@ const ProjectWorkflowListItem = ({
 
     const deleteWorkflowMutation = useDeleteWorkflowMutation({
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ProjectKeys.projects});
+            queryClient.invalidateQueries({ queryKey: ProjectKeys.projects });
 
             setShowDeleteDialog(false);
         },
@@ -70,10 +70,10 @@ const ProjectWorkflowListItem = ({
 
     const duplicateWorkflowMutation = useDuplicateWorkflowMutation({
         onError: () => {
-            queryClient.invalidateQueries({queryKey: ProjectKeys.projects});
+            queryClient.invalidateQueries({ queryKey: ProjectKeys.projects });
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ProjectKeys.projects});
+            queryClient.invalidateQueries({ queryKey: ProjectKeys.projects });
         },
     });
 
@@ -97,7 +97,7 @@ const ProjectWorkflowListItem = ({
 
     return (
         <li
-            className="flex items-center justify-between rounded-md px-2 py-1 hover:bg-destructive-foreground"
+            className="flex items-center justify-between rounded-md px-2 py-1 hover:bg-accent hover:text-accent-foreground"
             key={workflow.id}
         >
             <Link

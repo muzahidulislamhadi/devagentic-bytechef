@@ -148,7 +148,7 @@
         --card-foreground: 224 71.4% 4.1%;
         --popover: 0 0% 100%;
         --popover-foreground: 224 71.4% 4.1%;
-        --primary: 220.9 39.3% 11%;
+        --primary: 142 76% 55%;
         --primary-foreground: 210 20% 98%;
         --secondary: 220 14.3% 95.9%;
         --secondary-foreground: 220.9 39.3% 11%;
@@ -164,18 +164,18 @@
         --success-foreground: 142 77% 73%;
         --border: 220 13% 91%;
         --input: 220 13% 91%;
-        --ring: 213 87% 48%;
+        --ring: 142 76% 55%;
         --chart-1: 12 76% 61%;
         --chart-2: 173 58% 39%;
         --chart-3: 197 37% 24%;
         --chart-4: 43 74% 66%;
         --chart-5: 27 87% 67%;
         --skeleton: 220 9% 93%;
-        --surface-brand-primary: 217 91% 40%;
-        --surface-brand-primary-hover: 217 91% 36%;
-        --surface-brand-primary-active: 217 92% 28%;
-        --surface-brand-secondary: 215 61% 94%;
-        --surface-brand-secondary-hover: 212 80% 90%;
+        --surface-brand-primary: 142 76% 55%;
+        --surface-brand-primary-hover: 142 76% 51%;
+        --surface-brand-primary-active: 142 76% 43%;
+        --surface-brand-secondary: 142 61% 94%;
+        --surface-brand-secondary-hover: 142 80% 90%;
         --surface-destructive-primary: 0 72% 51%;
         --surface-destructive-primary-hover: 0 74% 42%;
         --surface-destructive-primary-active: 0 70% 35%;
@@ -188,7 +188,7 @@
         --surface-popover-canvas: 210 40% 98%;
         --surface-warning-primary: 48, 96%, 53%;
         --surface-warning-secondary: 55, 92%, 95%;
-        --content-brand-primary: 217 91% 40%;
+        --content-brand-primary: 142 76% 55%;
         --content-destructive: 0 74% 42%;
         --content-neutral-primary: 229 84% 5%;
         --content-neutral-secondary: 215 19% 35%;
@@ -199,10 +199,10 @@
         --stroke-neutral-primary-hover: 215 20% 65%;
         --stroke-neutral-secondary: 214 32% 91%;
         --stroke-neutral-tertiary: 213, 27%, 84%;
-        --stroke-brand-primary: 217 91% 40%;
-        --stroke-brand-primary-pressed: 213 87% 34%;
-        --stroke-brand-secondary: 217 62% 82%;
-        --stroke-brand-secondary-hover: 213 81% 65%;
+        --stroke-brand-primary: 142 76% 55%;
+        --stroke-brand-primary-pressed: 142 76% 49%;
+        --stroke-brand-secondary: 142 62% 82%;
+        --stroke-brand-secondary-hover: 142 81% 65%;
         --radius: 0.5rem;
         --workflow-nodes-popover-component-menu-width: 330px;
     }
@@ -214,7 +214,7 @@
         --card-foreground: 210 40% 98%;
         --popover: 222.2 84% 4.9%;
         --popover-foreground: 210 40% 98%;
-        --primary: 217.2 91.2% 59.8%;
+        --primary: 142 76% 55%;
         --primary-foreground: 222.2 84% 4.9%;
         --secondary: 217.2 32.6% 17.5%;
         --secondary-foreground: 210 40% 98%;
@@ -226,18 +226,18 @@
         --destructive-foreground: 210 40% 98%;
         --border: 217.2 32.6% 17.5%;
         --input: 217.2 32.6% 17.5%;
-        --ring: 224.3 76.3% 94.1%;
+        --ring: 142 76% 55%;
         --chart-1: 220 70% 50%;
         --chart-2: 160 60% 45%;
         --chart-3: 30 80% 55%;
         --chart-4: 280 65% 60%;
         --chart-5: 340 75% 55%;
         --skeleton: 217.2 32.6% 17.5%;
-        --surface-brand-primary: 217 91% 60%;
-        --surface-brand-primary-hover: 217 91% 56%;
-        --surface-brand-primary-active: 217 92% 48%;
-        --surface-brand-secondary: 217 32% 18%;
-        --surface-brand-secondary-hover: 217 40% 22%;
+        --surface-brand-primary: 142 76% 55%;
+        --surface-brand-primary-hover: 142 76% 51%;
+        --surface-brand-primary-active: 142 76% 43%;
+        --surface-brand-secondary: 142 32% 18%;
+        --surface-brand-secondary-hover: 142 40% 22%;
         --surface-destructive-primary: 0 72% 51%;
         --surface-destructive-primary-hover: 0 74% 42%;
         --surface-destructive-primary-active: 0 70% 35%;
@@ -250,7 +250,7 @@
         --surface-popover-canvas: 222.2 84% 4.9%;
         --surface-warning-primary: 48, 96%, 53%;
         --surface-warning-secondary: 54, 91%, 12%;
-        --content-brand-primary: 217 91% 60%;
+        --content-brand-primary: 142 76% 55%;
         --content-destructive: 0 74% 62%;
         --content-neutral-primary: 210 40% 98%;
         --content-neutral-secondary: 215 20.2% 65.1%;
@@ -261,10 +261,10 @@
         --stroke-neutral-primary-hover: 217.2 32.6% 35%;
         --stroke-neutral-secondary: 217.2 32.6% 17.5%;
         --stroke-neutral-tertiary: 217.2 32.6% 22%;
-        --stroke-brand-primary: 217 91% 60%;
-        --stroke-brand-primary-pressed: 217 87% 54%;
-        --stroke-brand-secondary: 217 62% 28%;
-        --stroke-brand-secondary-hover: 217 81% 35%;
+        --stroke-brand-primary: 142 76% 55%;
+        --stroke-brand-primary-pressed: 142 76% 49%;
+        --stroke-brand-secondary: 142 62% 28%;
+        --stroke-brand-secondary-hover: 142 81% 35%;
     }
 
     * {
