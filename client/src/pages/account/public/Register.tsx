@@ -10,13 +10,13 @@ import { useApplicationInfoStore } from '@/shared/stores/useApplicationInfoStore
 import { useFeatureFlagsStore } from '@/shared/stores/useFeatureFlagsStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CheckIcon, Eye, EyeOff, XIcon } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
 import { z } from 'zod';
 
-import { auth, githubProvider, googleProvider, signInWithPopup } from '../../../firebase/init';
+import { auth, githubProvider, googleProvider, signInWithPopup, signUpWithEmailAndPassword } from '../../../firebase/init';
 import githubLogo from '../images/github-logo.svg';
 import googleLogo from '../images/google-logo.svg';
 
@@ -28,31 +28,6 @@ const formSchema = z
     .object({
         email: z.string().min(5, { message: 'Email is required' }).max(254),
         password: z.string(),
-    })
-    .superRefine(({ password }, checkPasswordComplexity) => {
-        const containsUppercase = (character: string) => /[A-Z]/.test(character);
-        const containsNumber = (char: string) => /\d/.test(char);
-
-        const passwordValidationCriteria = {
-            passwordLength: { message: passwordLengthMessage, validationPass: password.length >= 8 },
-            totalNumbers: { message: passwordContainsNumberMessage, validationPass: [...password].some(containsNumber) },
-            upperCase: {
-                message: passwordContainsUppercaseMessage,
-                validationPass: [...password].some(containsUppercase),
-            },
-        };
-
-        if (
-            !passwordValidationCriteria.passwordLength.validationPass ||
-            !passwordValidationCriteria.upperCase.validationPass ||
-            !passwordValidationCriteria.totalNumbers.validationPass
-        ) {
-            checkPasswordComplexity.addIssue({
-                code: 'custom',
-                message: JSON.stringify(passwordValidationCriteria),
-                path: ['password'],
-            });
-        }
     });
 
 const Register = () => {
@@ -97,14 +72,15 @@ const Register = () => {
         }
     };
 
-    const handleSubmit = useCallback(
-        ({ email, password }: z.infer<typeof formSchema>) => {
-            register(email, password);
+    const handleSubmit = async ({ email, password }: z.infer<typeof formSchema>) => {
+        try {
+            await signUpWithEmailAndPassword(email, password);
 
-            reset();
-        },
-        [register, reset]
-    );
+            navigate('/');
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const handleGoogleLogin = async () => {
         try {

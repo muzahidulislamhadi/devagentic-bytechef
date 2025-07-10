@@ -127,14 +127,6 @@ public class AccountController {
             if (tenantService.tenantIdsByUserEmailExist(managedUserVM.getEmail())) {
                 throw new EmailAlreadyUsedException();
             }
-        } else {
-            // Modified: Remove the restriction that prevents multiple users in single-tenant mode
-            // The original code was:
-            // if (userService.countActiveUsers() > 0) {
-            //     throw new AccountResourceException(
-            //         "Organization already exists", AccountErrorType.ORGANIZATION_ALREADY_EXISTS);
-            // }
-            // Now we allow multiple users in single-tenant mode
         }
 
         if (isPasswordLengthInvalid(managedUserVM.getPassword())) {

@@ -4,51 +4,51 @@ import ApiCollections from '@/ee/pages/automation/api-platform/api-collections/A
 import AppEvents from '@/ee/pages/embedded/app-events/AppEvents';
 import AutomationWorkflows from '@/ee/pages/embedded/automation-workflows/AutomationWorkflows';
 import ConnectedUsers from '@/ee/pages/embedded/connected-users/ConnectedUsers';
-import {Connections as EmbeddedConnections} from '@/ee/pages/embedded/connections/Connections';
+import { Connections as EmbeddedConnections } from '@/ee/pages/embedded/connections/Connections';
 import IntegrationInstanceConfigurations from '@/ee/pages/embedded/integration-instance-configurations/IntegrationInstanceConfigurations';
 import Integration from '@/ee/pages/embedded/integration/Integration';
 import Integrations from '@/ee/pages/embedded/integrations/Integrations';
-import {WorkflowExecutions as EmbeddedIntegrationWorkflowExecutions} from '@/ee/pages/embedded/workflow-executions/WorkflowExecutions';
+import { WorkflowExecutions as EmbeddedIntegrationWorkflowExecutions } from '@/ee/pages/embedded/workflow-executions/WorkflowExecutions';
 import SigningKeys from '@/ee/pages/settings/embedded/signing-keys/SigningKeys';
 import ApiConnectors from '@/ee/pages/settings/platform/api-connectors/ApiConnectors';
 import CustomComponents from '@/ee/pages/settings/platform/custom-components/CustomComponents';
-import {IntegrationApi} from '@/ee/shared/middleware/embedded/configuration';
-import {IntegrationKeys} from '@/ee/shared/queries/embedded/integrations.queries';
+import { IntegrationApi } from '@/ee/shared/middleware/embedded/configuration';
+import { IntegrationKeys } from '@/ee/shared/queries/embedded/integrations.queries';
 import AccountErrorPage from '@/pages/account/public/AccountErrorPage';
-import Login from '@/pages/account/public/Login';
+import Login from "@/pages/account/public/Login";
 import PasswordResetEmailSent from '@/pages/account/public/PasswordResetEmailSent';
 import PasswordResetFinish from '@/pages/account/public/PasswordResetFinish';
 import PasswordResetInit from '@/pages/account/public/PasswordResetInit';
-import Register from '@/pages/account/public/Register';
+import Register from "@/pages/account/public/Register";
 import RegisterSuccess from '@/pages/account/public/RegisterSuccess';
 import VerifyEmail from '@/pages/account/public/VerifyEmail';
 import AccountProfile from '@/pages/account/settings/AccountProfile';
 import Appearance from '@/pages/account/settings/Appearance';
 import Sessions from '@/pages/account/settings/Sessions';
-import {Connections as AutomationConnections} from '@/pages/automation/connections/Connections';
+import { Connections as AutomationConnections } from '@/pages/automation/connections/Connections';
 import McpServers from '@/pages/automation/mcp-servers/McpServers';
 import ProjectDeployments from '@/pages/automation/project-deployments/ProjectDeployments';
 import Project from '@/pages/automation/project/Project';
 import Projects from '@/pages/automation/projects/Projects';
 import WorkflowChat from '@/pages/automation/workflow-chat/WorkflowChat';
-import {WorkflowExecutions as AutomationWorkflowExecutions} from '@/pages/automation/workflow-executions/WorkflowExecutions';
+import { WorkflowExecutions as AutomationWorkflowExecutions } from '@/pages/automation/workflow-executions/WorkflowExecutions';
 import Home from '@/pages/home/Home';
 import AiProviders from '@/pages/platform/settings/ai-providers/AiProviders';
 import ApiKeys from '@/pages/platform/settings/api-keys/ApiKeys';
 import GitConfiguration from '@/pages/platform/settings/git-configuration/GitConfiguration';
 import Notifications from '@/pages/platform/settings/notifications/Notifications';
 import Workspaces from '@/pages/settings/automation/workspaces/Workspaces';
-import {AccessControl} from '@/shared/auth/AccessControl';
+import { AccessControl } from '@/shared/auth/AccessControl';
 import PrivateRoute from '@/shared/auth/PrivateRoute';
-import {AUTHORITIES} from '@/shared/constants';
+import { AUTHORITIES } from '@/shared/constants';
 import EEVersion from '@/shared/edition/EEVersion';
 import ErrorPage from '@/shared/error/ErrorPage';
 import PageNotFound from '@/shared/error/PageNotFound';
 import Settings from '@/shared/layout/Settings';
-import {ProjectApi} from '@/shared/middleware/automation/configuration';
-import {ProjectKeys} from '@/shared/queries/automation/projects.queries';
-import {QueryClient} from '@tanstack/react-query';
-import {createBrowserRouter, redirect} from 'react-router-dom';
+import { ProjectApi } from '@/shared/middleware/automation/configuration';
+import { ProjectKeys } from '@/shared/queries/automation/projects.queries';
+import { QueryClient } from '@tanstack/react-query';
+import { createBrowserRouter, redirect } from 'react-router-dom';
 
 const getAccountRoutes = (path: string) => ({
     children: [
@@ -297,7 +297,7 @@ export const getRouter = (queryClient: QueryClient) =>
                                             <Project />
                                         </PrivateRoute>
                                     ),
-                                    loader: async ({params}) =>
+                                    loader: async ({ params }) =>
                                         queryClient.ensureQueryData({
                                             queryFn: () =>
                                                 new ProjectApi().getProject({
@@ -432,7 +432,7 @@ export const getRouter = (queryClient: QueryClient) =>
                                             <Integration />
                                         </PrivateRoute>
                                     ),
-                                    loader: async ({params}) =>
+                                    loader: async ({ params }) =>
                                         queryClient.ensureQueryData({
                                             queryFn: () =>
                                                 new IntegrationApi().getIntegration({

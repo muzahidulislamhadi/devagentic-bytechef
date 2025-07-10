@@ -15,7 +15,13 @@ import { useForm } from 'react-hook-form';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
-import { auth, githubProvider, googleProvider, signInWithPopup } from '../../../firebase/init';
+import {
+    auth,
+    githubProvider,
+    googleProvider,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+} from '../../../firebase/init';
 import githubLogo from '../images/github-logo.svg';
 import googleLogo from '../images/google-logo.svg';
 
@@ -52,12 +58,14 @@ const Login = () => {
         formState: { isSubmitting },
     } = form;
 
-    const handleSubmit = async ({ email, password, rememberMe }: z.infer<typeof formSchema>) => {
-        return login(email, password, rememberMe).then((account) => {
-            if (account) {
-                analytics.identify(account);
-            }
-        });
+    const handleSubmit = async ({ email, password }: z.infer<typeof formSchema>) => {
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+
+            navigate('/');
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const handleGoogleLogin = async () => {

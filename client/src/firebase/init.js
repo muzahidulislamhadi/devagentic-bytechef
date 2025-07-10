@@ -1,8 +1,10 @@
 import { initializeApp } from "firebase/app";
 import {
+    createUserWithEmailAndPassword,
     getAuth,
     GithubAuthProvider,
     GoogleAuthProvider,
+    signInWithEmailAndPassword,
     signInWithPopup
 } from "firebase/auth";
 
@@ -19,7 +21,18 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+const signUpWithEmailAndPassword = (email, password) => {
+    return createUserWithEmailAndPassword(auth, email, password);
+};
+
 const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider(); // Ready, works when enabled in Firebase Console
 
-export { auth, githubProvider, googleProvider, signInWithPopup };
+export {
+    auth,
+    githubProvider,
+    googleProvider,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    signUpWithEmailAndPassword
+};
