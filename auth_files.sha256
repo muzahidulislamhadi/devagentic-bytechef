@@ -1,0 +1,6 @@
+980384c49dd50390f7a243811060980ee954530e29865440f2400e433923b583  server/libs/platform/platform-user/platform-user-rest/platform-user-rest-impl/src/main/java/com/bytechef/platform/user/web/rest/AccountController.java
+ae36e93cd07b2da6b24d4d9b353739e78cfb1c10c94f26754d4961632b636940  server/libs/platform/platform-user/platform-user-service/src/main/java/com/bytechef/platform/user/service/UserServiceImpl.java
+12edee317279751efc24cb1ce7fb337bc31d719ff940ac1814a5fd0b3f2a91d7  server/apps/server-app/src/main/resources/config/application.yml
+1a3eb582ce608fcdb7528be1d4dfeb62dc64594a2cac47c3fee7ff962fc2c823  client/src/firebase/init.js
+91e9ceb91df50df24abdabfcd4ba41eaa27e680b675009f6ed42d6b5abe28a50  client/src/pages/account/public/Login.tsx
+e87e955068f09655c91cadaea922b843584ca88af91c72cb7a071f9292530f77  client/src/pages/account/public/Register.tsx

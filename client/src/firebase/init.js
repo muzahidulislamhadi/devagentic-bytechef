@@ -8,6 +8,13 @@ import {
     signInWithPopup
 } from "firebase/auth";
 
+// Check if Firebase environment variables are available
+const hasFirebaseConfig = !!(
+    import.meta.env.VITE_FIREBASE_API_KEY &&
+    import.meta.env.VITE_FIREBASE_AUTH_DOMAIN &&
+    import.meta.env.VITE_FIREBASE_PROJECT_ID
+);
+
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -18,20 +25,36 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+let app = null;
+let auth = null;
+let googleProvider = null;
+let githubProvider = null;
+
+if (hasFirebaseConfig) {
+    try {
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        googleProvider = new GoogleAuthProvider();
+        githubProvider = new GithubAuthProvider();
+    } catch (error) {
+        console.error('Firebase initialization failed:', error);
+    }
+} else {
+    console.warn('Firebase configuration missing. Social login will not work. Please create .env file with Firebase credentials.');
+}
 
 const signUpWithEmailAndPassword = (email, password) => {
+    if (!auth) {
+        throw new Error('Firebase not configured. Social authentication unavailable.');
+    }
     return createUserWithEmailAndPassword(auth, email, password);
 };
-
-const googleProvider = new GoogleAuthProvider();
-const githubProvider = new GithubAuthProvider(); // Ready, works when enabled in Firebase Console
 
 export {
     auth,
     githubProvider,
     googleProvider,
+    hasFirebaseConfig,
     signInWithEmailAndPassword,
     signInWithPopup,
     signUpWithEmailAndPassword

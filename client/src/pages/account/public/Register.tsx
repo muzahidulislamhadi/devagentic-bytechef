@@ -16,7 +16,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
 import { z } from 'zod';
 
-import { auth, githubProvider, googleProvider, signInWithPopup } from '../../../firebase/init';
+import { auth, githubProvider, googleProvider, hasFirebaseConfig, signInWithPopup } from '../../../firebase/init';
 import githubLogo from '../images/github-logo.svg';
 import googleLogo from '../images/google-logo.svg';
 
@@ -107,6 +107,16 @@ const Register = () => {
     );
 
     const handleGoogleLogin = async () => {
+        if (!hasFirebaseConfig || !auth || !googleProvider) {
+            navigate('/account-error', {
+                state: {
+                    error: 'Social login is not configured. Please contact support or use email/password registration.',
+                    fromInternalFlow: true
+                }
+            });
+            return;
+        }
+
         try {
             const result = await signInWithPopup(auth, googleProvider);
             const { displayName, email, photoURL } = result.user;
@@ -148,6 +158,16 @@ const Register = () => {
     };
 
     const handleGithubLogin = async () => {
+        if (!hasFirebaseConfig || !auth || !githubProvider) {
+            navigate('/account-error', {
+                state: {
+                    error: 'Social login is not configured. Please contact support or use email/password registration.',
+                    fromInternalFlow: true
+                }
+            });
+            return;
+        }
+
         try {
             const result = await signInWithPopup(auth, githubProvider);
             const { displayName, email, photoURL } = result.user;
@@ -226,33 +246,35 @@ const Register = () => {
                 </CardHeader>
 
                 <CardContent className="flex flex-col gap-6 p-0">
-                    <>
-                        <div className="flex flex-col gap-4">
-                            <Button className="flex items-center gap-2 rounded-md px-4 py-5" onClick={handleGoogleLogin} variant="outline">
-                                <img alt="Google logo" src={googleLogo} />
+                    {hasFirebaseConfig && (
+                        <>
+                            <div className="flex flex-col gap-4">
+                                <Button className="flex items-center gap-2 rounded-md px-4 py-5" onClick={handleGoogleLogin} variant="outline">
+                                    <img alt="Google logo" src={googleLogo} />
 
-                                <span className="text-sm font-medium text-content-neutral-primary">
-                                    Continue with Google
-                                </span>
-                            </Button>
+                                    <span className="text-sm font-medium text-content-neutral-primary">
+                                        Continue with Google
+                                    </span>
+                                </Button>
 
-                            <Button className="flex items-center gap-2 rounded-md px-4 py-5" onClick={handleGithubLogin} variant="outline">
-                                <img alt="Github logo" src={githubLogo} />
+                                <Button className="flex items-center gap-2 rounded-md px-4 py-5" onClick={handleGithubLogin} variant="outline">
+                                    <img alt="Github logo" src={githubLogo} />
 
-                                <span className="text-sm font-medium text-content-neutral-primary">
-                                    Continue with Github
-                                </span>
-                            </Button>
-                        </div>
+                                    <span className="text-sm font-medium text-content-neutral-primary">
+                                        Continue with Github
+                                    </span>
+                                </Button>
+                            </div>
 
-                        <div className="flex items-center">
-                            <hr className="w-1/2 border-content-neutral-tertiary" />
+                            <div className="flex items-center">
+                                <hr className="w-1/2 border-content-neutral-tertiary" />
 
-                            <p className="px-2 text-sm text-content-neutral-tertiary">or</p>
+                                <p className="px-2 text-sm text-content-neutral-tertiary">or</p>
 
-                            <hr className="w-1/2 border-content-neutral-tertiary" />
-                        </div>
-                    </>
+                                <hr className="w-1/2 border-content-neutral-tertiary" />
+                            </div>
+                        </>
+                    )}
 
                     <Form {...form}>
                         <form className="flex flex-col gap-4" onSubmit={form.handleSubmit(handleSubmit)}>
