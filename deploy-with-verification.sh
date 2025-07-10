@@ -30,7 +30,7 @@ if ! check_fix "server/libs/platform/platform-user/platform-user-service/src/mai
     FIXES_MISSING=1
 fi
 
-if ! check_fix "server/libs/platform/platform-user/platform-user-rest/platform-user-rest-impl/src/main/java/com/bytechef/platform/user/web/rest/AccountController.java" "SINGLE_TENANT_MODE" "Backend multi-user registration"; then
+if ! check_fix "server/libs/platform/platform-user/platform-user-rest/platform-user-rest-impl/src/main/java/com/bytechef/platform/user/web/rest/AccountController.java" "In single-tenant mode, always allow registration" "Backend multi-user registration"; then
     FIXES_MISSING=1
 fi
 

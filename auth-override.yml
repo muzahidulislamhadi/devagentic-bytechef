@@ -1,0 +1,25 @@
+bytechef:
+  tenant:
+    mode: single  # Force single-tenant mode (allows multiple users)
+  signUp:
+    enabled: true  # Force registration enabled
+    activationRequired: false
+  feature-flags:
+    - ff-1874  # Enable Firebase authentication
+  security:
+    remember-me:
+      key: e48keep1this1safe3ffb2
+
+spring:
+  profiles:
+    active: prod
+  datasource:
+    url: ${BYTECHEF_DATASOURCE_URL:jdbc:postgresql://postgres:5432/bytechef}
+    username: ${BYTECHEF_DATASOURCE_USERNAME:postgres}
+    password: ${BYTECHEF_DATASOURCE_PASSWORD:postgres}
+
+# Custom property to override organization limits
+app:
+  auth:
+    multiUserEnabled: true
+    adminEmail: admin@devagentic.io

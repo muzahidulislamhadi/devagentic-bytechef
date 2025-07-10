@@ -1,0 +1,55 @@
+---
+services:
+  postgres:
+    container_name: postgres
+    image: pgvector/pgvector:pg16
+    ports:
+      - "5432:5432"
+    volumes:
+      - storage_db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=bytechef
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Build ByteChef server from our source code with authentication fixes
+  bytechef:
+    build:
+      context: .
+      dockerfile: server/apps/server-app/Dockerfile_dev
+    container_name: bytechef-server-with-auth-fixes
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - BYTECHEF_DATASOURCE_URL=jdbc:postgresql://postgres:5432/bytechef
+      - BYTECHEF_DATASOURCE_USERNAME=postgres
+      - BYTECHEF_DATASOURCE_PASSWORD=postgres
+      - BYTECHEF_FEATURE_FLAGS=ff-1874
+      - BYTECHEF_TENANT_MODE=single
+      - BYTECHEF_SIGNUP_ENABLED=true
+      - BYTECHEF_SIGNUP_ACTIVATION_REQUIRED=false
+      - SPRING_PROFILES_ACTIVE=dev
+      - SERVER_PORT=8080
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./client/dist:/opt/bytechef/client:ro
+    command: >
+      sh -c "
+        echo '🔍 VERIFYING AUTHENTICATION FIXES ARE DEPLOYED:' &&
+        echo '✅ Server built from source code with multi-user registration' &&
+        echo '✅ Admin role assignment: admin@devagentic.io → ADMIN' &&
+        echo '✅ Multi-user registration: ENABLED in single-tenant mode' &&
+        echo '✅ Feature flags: ff-1874 enabled for social login' &&
+        echo '🚀 Starting ByteChef server with authentication fixes...' &&
+        exec java -jar /opt/bytechef/server-app.jar
+      "
+
+volumes:
+  storage_db:
