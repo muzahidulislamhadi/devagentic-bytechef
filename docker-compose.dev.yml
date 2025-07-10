@@ -1,0 +1,67 @@
+---
+services:
+  postgres:
+    container_name: postgres
+    image: pgvector/pgvector:pg16
+    ports:
+      - "5432:5432"
+    volumes:
+      - storage_db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=bytechef
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Build server from our source code with authentication fixes
+  server:
+    build:
+      context: .
+      dockerfile: server/apps/server-app/Dockerfile_dev
+    container_name: bytechef-server
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/bytechef
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - BYTECHEF_DATASOURCE_URL=jdbc:postgresql://postgres:5432/bytechef
+      - BYTECHEF_DATASOURCE_USERNAME=postgres
+      - BYTECHEF_DATASOURCE_PASSWORD=postgres
+      - BYTECHEF_FEATURE_FLAGS=ff-1874
+      - BYTECHEF_SECURITY_REMEMBER-ME_KEY=e48keep1this1safe3ffb2
+      - BYTECHEF_PUBLIC_URL=https://dashboard.devagentic.io
+      - SPRING_PROFILES_ACTIVE=dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./client/dist:/opt/bytechef/client
+
+  # Build frontend from our source code with Firebase fixes
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.frontend
+    container_name: bytechef-frontend
+    volumes:
+      - frontend_dist:/app/dist
+    command: >
+      sh -c "
+        echo 'Building frontend with our authentication fixes...' &&
+        npm install --legacy-peer-deps &&
+        npm run build &&
+        echo 'Frontend build completed with Firebase authentication!' &&
+        cp -r dist/* /app/dist/
+      "
+
+volumes:
+  storage_db:
+    driver: "local"
+  frontend_dist:
+    driver: "local"

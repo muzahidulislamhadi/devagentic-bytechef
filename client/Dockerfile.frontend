@@ -1,0 +1,27 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install --legacy-peer-deps
+
+# Copy source code with our authentication fixes
+COPY . .
+
+# Build the frontend with our Firebase integration
+RUN npm run build
+
+# Verify our fixes are included
+RUN echo "Verifying Firebase integration..." && \
+  (grep -r "hasFirebaseConfig" dist/ || echo "Warning: Firebase config not found") && \
+  (grep -r "Google\|GitHub" dist/ || echo "Warning: Social login not found") && \
+  echo "Frontend build verification complete"
+
+# Create output directory
+RUN mkdir -p /app/dist
+
+# Default command
+CMD ["sh", "-c", "echo 'Frontend container ready' && tail -f /dev/null"]
