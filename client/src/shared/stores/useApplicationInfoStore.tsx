@@ -54,7 +54,9 @@ export const useApplicationInfoStore = create<ApplicationInfoI>()(
                     },
                 },
                 application: null,
-                featureFlags: {},
+                featureFlags: {
+                    'ff-1874': true, // Enable Firebase Authentication by default
+                },
                 loading: false,
                 signUp: {
                     activationRequired: false,

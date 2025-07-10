@@ -201,13 +201,16 @@ public class UserServiceImpl implements UserService {
 
         Set<Authority> authorities = new HashSet<>();
 
-        // Check if this is the first user (make them admin), otherwise assign USER role
-        if (userRepository.count() == 0) {
-            // First user gets admin privileges
+        // Special handling for admin@devagentic.io - always gets admin role
+        if ("admin@devagentic.io".equals(email.toLowerCase())) {
+            authorityRepository.findByName(AuthorityConstants.ADMIN)
+                .ifPresent(authorities::add);
+        } else if (userRepository.count() == 0) {
+            // First user (if not admin@devagentic.io) gets admin privileges
             authorityRepository.findByName(AuthorityConstants.ADMIN)
                 .ifPresent(authorities::add);
         } else {
-            // Subsequent users get regular user privileges
+            // All other users get regular user privileges
             authorityRepository.findByName(AuthorityConstants.USER)
                 .ifPresent(authorities::add);
         }

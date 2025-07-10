@@ -111,9 +111,11 @@ public class AccountController {
             throw new EmailAlreadyUsedException();
         }
 
-        ApplicationProperties.SignUp signUp = applicationProperties.getSignUp();
+                ApplicationProperties.SignUp signUp = applicationProperties.getSignUp();
 
-        if (!signUp.isEnabled() && (tenantService.isMultiTenantEnabled() || userService.countActiveUsers() > 0)) {
+        // Block registration only if sign-up is disabled AND we're in multi-tenant mode
+        // In single-tenant mode, always allow registration (multiple users allowed)
+        if (!signUp.isEnabled() && tenantService.isMultiTenantEnabled()) {
             throw new AccountResourceException("Sign-up is disabled", AccountErrorType.SIGN_UP_DISABLED);
         }
 
