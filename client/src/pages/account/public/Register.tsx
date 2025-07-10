@@ -10,13 +10,13 @@ import { useApplicationInfoStore } from '@/shared/stores/useApplicationInfoStore
 import { useFeatureFlagsStore } from '@/shared/stores/useFeatureFlagsStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CheckIcon, Eye, EyeOff, XIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
 import { z } from 'zod';
 
-import { auth, githubProvider, googleProvider, signInWithPopup, signUpWithEmailAndPassword } from '../../../firebase/init';
+import { auth, githubProvider, googleProvider, signInWithPopup } from '../../../firebase/init';
 import githubLogo from '../images/github-logo.svg';
 import googleLogo from '../images/google-logo.svg';
 
@@ -28,6 +28,31 @@ const formSchema = z
     .object({
         email: z.string().min(5, { message: 'Email is required' }).max(254),
         password: z.string(),
+    })
+    .superRefine(({ password }, checkPasswordComplexity) => {
+        const containsUppercase = (character: string) => /[A-Z]/.test(character);
+        const containsNumber = (char: string) => /\d/.test(char);
+
+        const passwordValidationCriteria = {
+            passwordLength: { message: passwordLengthMessage, validationPass: password.length >= 8 },
+            totalNumbers: { message: passwordContainsNumberMessage, validationPass: [...password].some(containsNumber) },
+            upperCase: {
+                message: passwordContainsUppercaseMessage,
+                validationPass: [...password].some(containsUppercase),
+            },
+        };
+
+        if (
+            !passwordValidationCriteria.passwordLength.validationPass ||
+            !passwordValidationCriteria.upperCase.validationPass ||
+            !passwordValidationCriteria.totalNumbers.validationPass
+        ) {
+            checkPasswordComplexity.addIssue({
+                code: 'custom',
+                message: JSON.stringify(passwordValidationCriteria),
+                path: ['password'],
+            });
+        }
     });
 
 const Register = () => {
@@ -72,15 +97,14 @@ const Register = () => {
         }
     };
 
-    const handleSubmit = async ({ email, password }: z.infer<typeof formSchema>) => {
-        try {
-            await signUpWithEmailAndPassword(email, password);
+    const handleSubmit = useCallback(
+        ({ email, password }: z.infer<typeof formSchema>) => {
+            register(email, password);
 
-            navigate('/');
-        } catch (error) {
-            console.error(error);
-        }
-    };
+            reset();
+        },
+        [register, reset]
+    );
 
     const handleGoogleLogin = async () => {
         try {
@@ -202,35 +226,33 @@ const Register = () => {
                 </CardHeader>
 
                 <CardContent className="flex flex-col gap-6 p-0">
-                    {ff_1874 && (
-                        <>
-                            <div className="flex flex-col gap-4">
-                                <Button className="flex items-center gap-2 rounded-md px-4 py-5" onClick={handleGoogleLogin} variant="outline">
-                                    <img alt="Google logo" src={googleLogo} />
+                    <>
+                        <div className="flex flex-col gap-4">
+                            <Button className="flex items-center gap-2 rounded-md px-4 py-5" onClick={handleGoogleLogin} variant="outline">
+                                <img alt="Google logo" src={googleLogo} />
 
-                                    <span className="text-sm font-medium text-content-neutral-primary">
-                                        Continue with Google
-                                    </span>
-                                </Button>
+                                <span className="text-sm font-medium text-content-neutral-primary">
+                                    Continue with Google
+                                </span>
+                            </Button>
 
-                                <Button className="flex items-center gap-2 rounded-md px-4 py-5" onClick={handleGithubLogin} variant="outline">
-                                    <img alt="Github logo" src={githubLogo} />
+                            <Button className="flex items-center gap-2 rounded-md px-4 py-5" onClick={handleGithubLogin} variant="outline">
+                                <img alt="Github logo" src={githubLogo} />
 
-                                    <span className="text-sm font-medium text-content-neutral-primary">
-                                        Continue with Github
-                                    </span>
-                                </Button>
-                            </div>
+                                <span className="text-sm font-medium text-content-neutral-primary">
+                                    Continue with Github
+                                </span>
+                            </Button>
+                        </div>
 
-                            <div className="flex items-center">
-                                <hr className="w-1/2 border-content-neutral-tertiary" />
+                        <div className="flex items-center">
+                            <hr className="w-1/2 border-content-neutral-tertiary" />
 
-                                <p className="px-2 text-sm text-content-neutral-tertiary">or</p>
+                            <p className="px-2 text-sm text-content-neutral-tertiary">or</p>
 
-                                <hr className="w-1/2 border-content-neutral-tertiary" />
-                            </div>
-                        </>
-                    )}
+                            <hr className="w-1/2 border-content-neutral-tertiary" />
+                        </div>
+                    </>
 
                     <Form {...form}>
                         <form className="flex flex-col gap-4" onSubmit={form.handleSubmit(handleSubmit)}>

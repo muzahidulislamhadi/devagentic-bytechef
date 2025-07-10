@@ -1,4 +1,8 @@
+import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { useAnalytics } from '@/shared/hooks/useAnalytics';
+import { useAuthenticationStore } from '@/shared/stores/useAuthenticationStore';
+import { useQueryClient } from '@tanstack/react-query';
 
 import reactLogo from '@/assets/logo.png';
 
@@ -14,6 +18,17 @@ interface MobileSidebarProps {
 }
 
 export function MobileSidebar({ mobileMenuOpen, navigation, setMobileMenuOpen, user }: MobileSidebarProps) {
+    const { logout } = useAuthenticationStore();
+    const analytics = useAnalytics();
+    const queryClient = useQueryClient();
+
+    const handleLogOutClick = () => {
+        analytics.reset();
+        queryClient.resetQueries();
+        logout();
+        setMobileMenuOpen(false);
+    };
+
     return (
         <Dialog onOpenChange={setMobileMenuOpen} open={mobileMenuOpen}>
             <DialogContent className="flex h-full flex-col bg-background p-0 focus:outline-none">
@@ -61,23 +76,31 @@ export function MobileSidebar({ mobileMenuOpen, navigation, setMobileMenuOpen, u
                 </div>
 
                 <div className="flex shrink-0 border-t border-border p-4">
-                    <a className="group block shrink-0" href="#">
-                        <div className="flex items-center">
+                    <div className="w-full">
+                        <div className="flex items-center mb-3">
                             <div>
                                 <img alt="" className="inline-block size-10 rounded-full" src={user.imageUrl} />
                             </div>
 
                             <div className="ml-3">
-                                <p className="text-base font-medium text-foreground group-hover:text-foreground/80">
+                                <p className="text-base font-medium text-foreground">
                                     {user.name}
                                 </p>
 
-                                <p className="text-sm font-medium text-muted-foreground group-hover:text-foreground">
+                                <p className="text-sm font-medium text-muted-foreground">
                                     Account Settings
                                 </p>
                             </div>
                         </div>
-                    </a>
+
+                        <Button
+                            variant="outline"
+                            className="w-full"
+                            onClick={handleLogOutClick}
+                        >
+                            Log Out
+                        </Button>
+                    </div>
                 </div>
             </DialogContent>
         </Dialog>

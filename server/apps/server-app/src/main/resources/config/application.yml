@@ -246,6 +246,8 @@ bytechef:
   # Encryption key provider (filesystem - the key generated on filesystem, property - the key read from property) default: filesystem
   encryption:
     provider: filesystem
+  feature-flags:
+    - ff-1874
   file-storage:
     # File storage provider (aws(ee) | filesystem | jdbc) default: filesystem
     provider: filesystem
