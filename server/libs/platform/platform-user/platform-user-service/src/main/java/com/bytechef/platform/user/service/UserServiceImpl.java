@@ -201,8 +201,16 @@ public class UserServiceImpl implements UserService {
 
         Set<Authority> authorities = new HashSet<>();
 
-        authorityRepository.findByName(AuthorityConstants.ADMIN)
-            .ifPresent(authorities::add);
+        // Check if this is the first user (make them admin), otherwise assign USER role
+        if (userRepository.count() == 0) {
+            // First user gets admin privileges
+            authorityRepository.findByName(AuthorityConstants.ADMIN)
+                .ifPresent(authorities::add);
+        } else {
+            // Subsequent users get regular user privileges
+            authorityRepository.findByName(AuthorityConstants.USER)
+                .ifPresent(authorities::add);
+        }
 
         newUser.setAuthorities(authorities);
 

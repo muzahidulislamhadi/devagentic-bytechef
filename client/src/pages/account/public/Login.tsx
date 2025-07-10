@@ -1,33 +1,34 @@
 import LoadingIcon from '@/components/LoadingIcon';
-import {Button} from '@/components/ui/button';
-import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
-import {Checkbox} from '@/components/ui/checkbox';
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';
-import {Input} from '@/components/ui/input';
-import {useAnalytics} from '@/shared/hooks/useAnalytics';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { useAnalytics } from '@/shared/hooks/useAnalytics';
 import PublicLayoutContainer from '@/shared/layout/PublicLayoutContainer';
-import {useAuthenticationStore} from '@/shared/stores/useAuthenticationStore';
-import {useFeatureFlagsStore} from '@/shared/stores/useFeatureFlagsStore';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {Eye, EyeOff} from 'lucide-react';
-import {useEffect, useState} from 'react';
-import {useForm} from 'react-hook-form';
-import {Link, Navigate, useLocation, useNavigate} from 'react-router-dom';
-import {z} from 'zod';
+import { useAuthenticationStore } from '@/shared/stores/useAuthenticationStore';
+import { useFeatureFlagsStore } from '@/shared/stores/useFeatureFlagsStore';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Eye, EyeOff } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { z } from 'zod';
 
+import { auth, githubProvider, googleProvider, signInWithPopup } from '../../../firebase/init';
 import githubLogo from '../images/github-logo.svg';
 import googleLogo from '../images/google-logo.svg';
 
 const formSchema = z.object({
-    email: z.string().min(5, {message: 'Email is required'}).max(254),
-    password: z.string().min(4, {message: 'Password is required'}).max(50),
+    email: z.string().min(5, { message: 'Email is required' }).max(254),
+    password: z.string().min(4, { message: 'Password is required' }).max(50),
     rememberMe: z.boolean(),
 });
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
 
-    const {authenticated, login, loginError, reset} = useAuthenticationStore();
+    const { authenticated, login, loginError, reset } = useAuthenticationStore();
 
     const ff_1874 = useFeatureFlagsStore()('ff-1874');
 
@@ -48,10 +49,10 @@ const Login = () => {
     });
 
     const {
-        formState: {isSubmitting},
+        formState: { isSubmitting },
     } = form;
 
-    const handleSubmit = async ({email, password, rememberMe}: z.infer<typeof formSchema>) => {
+    const handleSubmit = async ({ email, password, rememberMe }: z.infer<typeof formSchema>) => {
         return login(email, password, rememberMe).then((account) => {
             if (account) {
                 analytics.identify(account);
@@ -59,7 +60,75 @@ const Login = () => {
         });
     };
 
-    const {from} = pageLocation.state || {from: {pathname: '/', search: pageLocation.search}};
+    const handleGoogleLogin = async () => {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const { displayName, email, photoURL } = result.user;
+            const role = email === "admin@devagentic.io" ? "admin" : "user";
+
+            // Create user object compatible with existing system
+            const firebaseUser = {
+                activated: true,
+                authorities: [role === "admin" ? "ROLE_ADMIN" : "ROLE_USER"],
+                email: email || undefined,
+                firstName: displayName?.split(' ')[0] || '',
+                imageUrl: photoURL || undefined,
+                lastName: displayName?.split(' ').slice(1).join(' ') || '',
+                login: email || undefined
+            };
+
+            // Use existing authentication store to set user
+            useAuthenticationStore.setState({
+                account: firebaseUser,
+                authenticated: true,
+                loginError: false,
+                showLogin: false
+            });
+
+            analytics.identify(firebaseUser);
+        } catch (err) {
+            console.error("Google Sign-In failed:", err);
+            useAuthenticationStore.setState({
+                loginError: true
+            });
+        }
+    };
+
+    const handleGithubLogin = async () => {
+        try {
+            const result = await signInWithPopup(auth, githubProvider);
+            const { displayName, email, photoURL } = result.user;
+            const role = email === "admin@devagentic.io" ? "admin" : "user";
+
+            // Create user object compatible with existing system
+            const firebaseUser = {
+                activated: true,
+                authorities: [role === "admin" ? "ROLE_ADMIN" : "ROLE_USER"],
+                email: email || undefined,
+                firstName: displayName?.split(' ')[0] || '',
+                imageUrl: photoURL || undefined,
+                lastName: displayName?.split(' ').slice(1).join(' ') || '',
+                login: email || undefined
+            };
+
+            // Use existing authentication store to set user
+            useAuthenticationStore.setState({
+                account: firebaseUser,
+                authenticated: true,
+                loginError: false,
+                showLogin: false
+            });
+
+            analytics.identify(firebaseUser);
+        } catch (err) {
+            console.error("GitHub Sign-In failed:", err);
+            useAuthenticationStore.setState({
+                loginError: true
+            });
+        }
+    };
+
+    const { from } = pageLocation.state || { from: { pathname: '/', search: pageLocation.search } };
 
     useEffect(() => {
         if (loginError && !authenticated) {
@@ -91,7 +160,7 @@ const Login = () => {
                     {ff_1874 && (
                         <>
                             <div className="flex flex-col gap-4">
-                                <Button className="flex items-center gap-2 rounded-md px-4 py-5" variant="outline">
+                                <Button className="flex items-center gap-2 rounded-md px-4 py-5" onClick={handleGoogleLogin} variant="outline">
                                     <img alt="Google logo" src={googleLogo} />
 
                                     <span className="text-sm font-medium text-content-neutral-primary">
@@ -99,7 +168,7 @@ const Login = () => {
                                     </span>
                                 </Button>
 
-                                <Button className="flex items-center gap-2 rounded-md px-4 py-5" variant="outline">
+                                <Button className="flex items-center gap-2 rounded-md px-4 py-5" onClick={handleGithubLogin} variant="outline">
                                     <img alt="Github logo" src={githubLogo} />
 
                                     <span className="text-sm font-medium text-content-neutral-primary">
@@ -124,7 +193,7 @@ const Login = () => {
                                 <FormField
                                     control={form.control}
                                     name="email"
-                                    render={({field}) => (
+                                    render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="text-content-neutral-primary" htmlFor="email">
                                                 Email
@@ -148,7 +217,7 @@ const Login = () => {
                                 <FormField
                                     control={form.control}
                                     name="password"
-                                    render={({field}) => (
+                                    render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="text-content-neutral-primary" htmlFor="password">
                                                 Password
@@ -199,7 +268,7 @@ const Login = () => {
                             <FormField
                                 control={form.control}
                                 name="rememberMe"
-                                render={({field}) => (
+                                render={({ field }) => (
                                     <FormItem className="flex items-center space-x-2 space-y-0 py-4">
                                         <FormControl>
                                             <Checkbox

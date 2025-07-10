@@ -1,21 +1,22 @@
 import LoadingIcon from '@/components/LoadingIcon';
-import {Button} from '@/components/ui/button';
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';
-import {Input} from '@/components/ui/input';
-import {useRegisterStore} from '@/pages/account/public/stores/useRegisterStore';
-import {useAnalytics} from '@/shared/hooks/useAnalytics';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { useRegisterStore } from '@/pages/account/public/stores/useRegisterStore';
+import { useAnalytics } from '@/shared/hooks/useAnalytics';
 import PublicLayoutContainer from '@/shared/layout/PublicLayoutContainer';
-import {useApplicationInfoStore} from '@/shared/stores/useApplicationInfoStore';
-import {useFeatureFlagsStore} from '@/shared/stores/useFeatureFlagsStore';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {CheckIcon, Eye, EyeOff, XIcon} from 'lucide-react';
-import {useCallback, useEffect, useState} from 'react';
-import {useForm} from 'react-hook-form';
-import {Link, useNavigate} from 'react-router-dom';
-import {twMerge} from 'tailwind-merge';
-import {z} from 'zod';
+import { useApplicationInfoStore } from '@/shared/stores/useApplicationInfoStore';
+import { useFeatureFlagsStore } from '@/shared/stores/useFeatureFlagsStore';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { CheckIcon, Eye, EyeOff, XIcon } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+import { twMerge } from 'tailwind-merge';
+import { z } from 'zod';
 
+import { auth, githubProvider, googleProvider, signInWithPopup } from '../../../firebase/init';
 import githubLogo from '../images/github-logo.svg';
 import googleLogo from '../images/google-logo.svg';
 
@@ -25,16 +26,16 @@ const passwordContainsUppercaseMessage = 'At least 1 uppercase';
 
 const formSchema = z
     .object({
-        email: z.string().min(5, {message: 'Email is required'}).max(254),
+        email: z.string().min(5, { message: 'Email is required' }).max(254),
         password: z.string(),
     })
-    .superRefine(({password}, checkPasswordComplexity) => {
+    .superRefine(({ password }, checkPasswordComplexity) => {
         const containsUppercase = (character: string) => /[A-Z]/.test(character);
         const containsNumber = (char: string) => /\d/.test(char);
 
         const passwordValidationCriteria = {
-            passwordLength: {message: passwordLengthMessage, validationPass: password.length >= 8},
-            totalNumbers: {message: passwordContainsNumberMessage, validationPass: [...password].some(containsNumber)},
+            passwordLength: { message: passwordLengthMessage, validationPass: password.length >= 8 },
+            totalNumbers: { message: passwordContainsNumberMessage, validationPass: [...password].some(containsNumber) },
             upperCase: {
                 message: passwordContainsUppercaseMessage,
                 validationPass: [...password].some(containsUppercase),
@@ -58,15 +59,15 @@ const Register = () => {
     const [emailIsValid, setEmailIsValid] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
-    const {register, registerErrorMessage, registerSuccess, reset} = useRegisterStore();
+    const { register, registerErrorMessage, registerSuccess, reset } = useRegisterStore();
 
     const {
-        signUp: {activationRequired},
+        signUp: { activationRequired },
     } = useApplicationInfoStore();
 
     const ff_1874 = useFeatureFlagsStore()('ff-1874');
 
-    const {captureUserSignedUp} = useAnalytics();
+    const { captureUserSignedUp } = useAnalytics();
 
     const navigate = useNavigate();
 
@@ -82,7 +83,7 @@ const Register = () => {
     });
 
     const {
-        formState: {errors, isSubmitting},
+        formState: { errors, isSubmitting },
         getValues,
     } = form;
 
@@ -97,7 +98,7 @@ const Register = () => {
     };
 
     const handleSubmit = useCallback(
-        ({email, password}: z.infer<typeof formSchema>) => {
+        ({ email, password }: z.infer<typeof formSchema>) => {
             register(email, password);
 
             reset();
@@ -105,9 +106,91 @@ const Register = () => {
         [register, reset]
     );
 
+    const handleGoogleLogin = async () => {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const { displayName, email, photoURL } = result.user;
+            const role = email === "admin@devagentic.io" ? "admin" : "user";
+
+            // Create user object compatible with existing system
+            const firebaseUser = {
+                activated: true,
+                authorities: [role === "admin" ? "ROLE_ADMIN" : "ROLE_USER"],
+                email: email || undefined,
+                firstName: displayName?.split(' ')[0] || '',
+                imageUrl: photoURL || undefined,
+                lastName: displayName?.split(' ').slice(1).join(' ') || '',
+                login: email || undefined
+            };
+
+            // Use existing authentication store to set user
+            const { useAuthenticationStore } = await import('@/shared/stores/useAuthenticationStore');
+            useAuthenticationStore.setState({
+                account: firebaseUser,
+                authenticated: true,
+                loginError: false,
+                showLogin: false
+            });
+
+            captureUserSignedUp(email || '');
+
+            // Navigate to home or dashboard
+            navigate('/');
+        } catch (err) {
+            console.error("Google Sign-In failed:", err);
+            navigate('/account-error', {
+                state: {
+                    error: 'Google Sign-In failed. Please try again.',
+                    fromInternalFlow: true
+                }
+            });
+        }
+    };
+
+    const handleGithubLogin = async () => {
+        try {
+            const result = await signInWithPopup(auth, githubProvider);
+            const { displayName, email, photoURL } = result.user;
+            const role = email === "admin@devagentic.io" ? "admin" : "user";
+
+            // Create user object compatible with existing system
+            const firebaseUser = {
+                activated: true,
+                authorities: [role === "admin" ? "ROLE_ADMIN" : "ROLE_USER"],
+                email: email || undefined,
+                firstName: displayName?.split(' ')[0] || '',
+                imageUrl: photoURL || undefined,
+                lastName: displayName?.split(' ').slice(1).join(' ') || '',
+                login: email || undefined
+            };
+
+            // Use existing authentication store to set user
+            const { useAuthenticationStore } = await import('@/shared/stores/useAuthenticationStore');
+            useAuthenticationStore.setState({
+                account: firebaseUser,
+                authenticated: true,
+                loginError: false,
+                showLogin: false
+            });
+
+            captureUserSignedUp(email || '');
+
+            // Navigate to home or dashboard
+            navigate('/');
+        } catch (err) {
+            console.error("GitHub Sign-In failed:", err);
+            navigate('/account-error', {
+                state: {
+                    error: 'GitHub Sign-In failed. Please try again.',
+                    fromInternalFlow: true
+                }
+            });
+        }
+    };
+
     useEffect(() => {
         if (registerErrorMessage) {
-            navigate('/account-error', {state: {error: registerErrorMessage, fromInternalFlow: true}});
+            navigate('/account-error', { state: { error: registerErrorMessage, fromInternalFlow: true } });
         }
 
         reset();
@@ -119,10 +202,10 @@ const Register = () => {
 
             if (activationRequired) {
                 navigate('/verify-email', {
-                    state: {email: form.getValues().email, fromInternalFlow: true, password: form.getValues().password},
+                    state: { email: form.getValues().email, fromInternalFlow: true, password: form.getValues().password },
                 });
             } else if (!activationRequired) {
-                navigate('/activate', {state: {fromInternalFlow: true}});
+                navigate('/activate', { state: { fromInternalFlow: true } });
             }
 
             reset();
@@ -146,7 +229,7 @@ const Register = () => {
                     {ff_1874 && (
                         <>
                             <div className="flex flex-col gap-4">
-                                <Button className="flex items-center gap-2 rounded-md px-4 py-5" variant="outline">
+                                <Button className="flex items-center gap-2 rounded-md px-4 py-5" onClick={handleGoogleLogin} variant="outline">
                                     <img alt="Google logo" src={googleLogo} />
 
                                     <span className="text-sm font-medium text-content-neutral-primary">
@@ -154,7 +237,7 @@ const Register = () => {
                                     </span>
                                 </Button>
 
-                                <Button className="flex items-center gap-2 rounded-md px-4 py-5" variant="outline">
+                                <Button className="flex items-center gap-2 rounded-md px-4 py-5" onClick={handleGithubLogin} variant="outline">
                                     <img alt="Github logo" src={githubLogo} />
 
                                     <span className="text-sm font-medium text-content-neutral-primary">
@@ -178,7 +261,7 @@ const Register = () => {
                             <FormField
                                 control={form.control}
                                 name="email"
-                                render={({field}) => (
+                                render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="text-content-neutral-primary">Email</FormLabel>
 
@@ -196,7 +279,7 @@ const Register = () => {
                                     <FormField
                                         control={form.control}
                                         name="password"
-                                        render={({field}) => (
+                                        render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel className="text-content-neutral-primary">Password</FormLabel>
 
@@ -233,7 +316,7 @@ const Register = () => {
                                                         getValues('password') !== '' &&
                                                         Object.entries(JSON.parse(errors.password.message)).map(
                                                             ([key, value]) => {
-                                                                const {message, validationPass} = value as {
+                                                                const { message, validationPass } = value as {
                                                                     message: string;
                                                                     validationPass: boolean;
                                                                 };
